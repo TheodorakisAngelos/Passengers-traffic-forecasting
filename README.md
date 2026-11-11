@@ -22,9 +22,8 @@ As with any statistical forecasting approach, the models cannot anticipate unexp
 
 ## Exploratory Analysis
 We begin by visualizing the available monthly passenger traffic data. 
-## Exploratory Analysis
 
-![Historical Passenger Traffic](images/AIA Monthly Passenger.png)
+![Historical Passenger Traffic](images/AIA_Monthly_Passengers.png)
 
 Several key patterns immediately emerge:
 	Strong seasonality is present throughout the series.
@@ -104,7 +103,7 @@ Start Year	Baseline MAPE	Trend + Seasonal Average MAPE
 | 2024+ | 4.55% | 3.57% | 2.17% |
 
  
-![Trend vs No Trend](images/Trend vs No trend Model comparison.png)
+![Trend vs No Trend](images/Trend_vs_No_trend_Model_comparison.png)
 
 The results indicate that the benefit of including a trend component is highly inconsistent. Although the trend model slightly outperformed the seasonal-only specification for the 2020+ training window (15.64% vs 18.39%), it produced substantially worse forecasting accuracy for most other candidate windows. The most striking example is the 2019+ window, where forecast error increased from 21.71% to 74.50% after introducing a trend component. 
 
@@ -121,7 +120,7 @@ Start Year	Trend + Seasonal	Seasonal Only
 
 While the trend specification occasionally achieved competitive results in individual validation periods, its performance was inconsistent. Four of the six candidate windows produced a negative improvement relative to the Seasonal Naive benchmark, meaning that the model actually performed worse than simply repeating the previous year's passenger traffic. In contrast, the seasonality-only specification outperformed the benchmark across every evaluated training window.
  
-![Improvement vs Baseline](images/Improvement over Seasonal Naive Benchmark.png)
+![Improvement vs Baseline](images/Improvement_over_Seasonal_Naive_Benchmark.png)
 
 The deterioration was particularly pronounced when the training data contained both the COVID-19 collapse and the subsequent recovery period. Rather than learning a stable long-term trend, the model attempted to extrapolate extraordinary growth patterns that were specific to the recovery phase.
 Inspection of the fitted parameters provided additional insight. In multiple validation periods, the trend smoothing parameter (β) converged towards values close to 1.0. This behaviour indicates that the model placed extremely high weight on the most recent observations when estimating trend.
