@@ -1,5 +1,21 @@
 # Passenger Traffic Forecasting for Athens International Airport
 
+## Contents
+
+- [Project Summary](#project-summary)
+- [Exploratory Analysis](#exploratory-analysis)
+- [Establishing a Baseline Forecast](#establishing-a-baseline-forecast)
+- [Holt-Winters Model](#holt-winters-model)
+- [Model Selection and Validation Strategy](#model-selection-and-validation-strategy)
+- [Trend Component Evaluation](#trend-component-evaluation)
+- [Evaluating Improvement Against the Baseline](#evaluating-improvement-against-the-baseline)
+- [Final Holt-Winters Model](#final-holt-winters-model)
+- [Residual Diagnostics](#residual-diagnostics)
+- [SARIMA Model](#sarima-model)
+- [Final Forecasts](#final-forecasts)
+- [Key Conclusions](#key-conclusions)
+
+
 ## Project Summary
 
 | Item | Value |
@@ -11,19 +27,6 @@
 | Benchmark | Seasonal Naive |
 | Final Holt-Winters Specification | Multiplicative Seasonality, No Trend |
 | Selected Training Window | 2019+ |
-
-## Contents
-1. Project Summary
-2. Exploratory Analysis
-3. Baseline Forecast
-4. Holt-Winters Model
-5. Validation Strategy
-6. Trend Component Evaluation
-7. Improvement vs Baseline
-8. Final Holt-Winters Model
-9. Residual Diagnostics
-10. SARIMA Model
-11. Final Forecasts
     
 In this project, we forecast passenger traffic at Athens International Airport using monthly data from 2019 onwards. Two forecasting methods are evaluated: **Holt-Winters Exponential Smoothing** and **Seasonal ARIMA (SARIMA)**.
 
@@ -35,6 +38,7 @@ As with all statistical forecasting models, unexpected external events such as t
 ## Exploratory Analysis
 We begin by visualizing the available monthly passenger traffic data. 
 
+### Historical AIA Passenger Traffic
 ![Historical Passenger Traffic](images/AIA_Monthly_Passengers.png)
 
 Several key patterns emerge:
@@ -97,9 +101,8 @@ To account for this, model performance is also evaluated relative to a simple Se
 The average Baseline MAPE and average Holt-Winters MAPE are then calculated across all validation sets for each candidate starting year. Rather than selecting the model with the lowest average MAPE, the final selection criterion is the relative improvement achieved over the baseline:
 
 
-```text
-Improvement = (Baseline MAPE - Model MAPE) / Baseline MAPE
-```
+```math
+Improvement = \frac{Baseline\ MAPE - Model\ MAPE}{Baseline\ MAPE}
 
 This approach ensures that each candidate training window is evaluated not only on forecasting accuracy but also on the additional predictive value it provides beyond a simple year-over-year forecast.
 
@@ -129,7 +132,8 @@ In most cases, adding a trend component resulted in higher forecasting errors. W
 | 2024+ | 4.55% | 3.57% | 2.17% |
 
 The results indicate that the benefit of including a trend component is inconsistent. Although the trend model performed slightly better for the 2020+ training window (15.64% vs 18.39%), it produced substantially higher errors for most of the remaining candidate windows. The most extreme example was the 2019+ window, where forecast error increased from 21.71% to 74.50% after adding a trend component. 
- 
+
+### Trend vs No Trend Comparison
 ![Trend vs No Trend](images/Trend_vs_No_trend_Model_comparison.png)
 
 ## Evaluating Improvement Against the Baseline
@@ -149,7 +153,7 @@ Improvement vs Baseline
 | 2023+ | -11.34% | 47.56% |
 | 2024+ | 21.41% | 52.26% |
 
- 
+### Improvement over the Seasonal Naive Benchmark
 ![Improvement vs Baseline](images/Improvement_over_Seasonal_Naive_Benchmark.png)
 
 Model diagnostics provided additional insight. In several validation periods, the trend smoothing parameter (β) was close to 1, indicating that the model placed very high weight on the most recent observations when estimating future growth. As a result, the model became highly sensitive to short-term fluctuations in passenger traffic. Rather than identifying a stable underlying pattern, the trend component reacted strongly to temporary changes and introduced additional forecast uncertainty.
@@ -170,9 +174,9 @@ Residual diagnostics revealed that forecast errors were centered close to zero, 
 
 However, autocorrelation analysis identified statistically significant residual dependence. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the null hypothesis of independent residuals (p < 0.05).
 
-These findings suggest that while the Holt-Winters model captured the main seasonal behaviour of passenger traffic, it was unable to explain all of the structure present in the data.
+## Why SARIMA Was Considered
 
-As a result, some predictive information remained unused. This indicated that a more flexible model capable of explicitly modelling autocorrelation, such as SARIMA, might achieve better forecasting performance.
+Although the final Holt-Winters specification produced strong results, residual diagnostics showed that some autocorrelation remained unexplained. This suggested that a model capable of explicitly modelling autocorrelation, such as SARIMA, might further improve forecasting performance.
 
 
 ## Key Conclusions
