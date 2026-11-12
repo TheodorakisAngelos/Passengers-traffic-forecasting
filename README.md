@@ -103,6 +103,7 @@ The average Baseline MAPE and average Holt-Winters MAPE are then calculated acro
 
 ```math
 Improvement = \frac{Baseline\ MAPE - Model\ MAPE}{Baseline\ MAPE}
+```
 
 This approach ensures that each candidate training window is evaluated not only on forecasting accuracy but also on the additional predictive value it provides beyond a simple year-over-year forecast.
 
