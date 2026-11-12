@@ -2,8 +2,6 @@
 
 ## Project Summary
 
-## Project Summary
-
 | Item | Value |
 |--------|--------|
 | Forecast Horizon | Oct 2026 - Sep 2027 |
