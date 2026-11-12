@@ -10,7 +10,7 @@
 - [Trend Component Evaluation](#trend-component-evaluation)
 - [Evaluating Improvement Against the Baseline](#evaluating-improvement-against-the-baseline)
 - [Final Holt-Winters Model](#final-holt-winters-model)
-- [Residual Diagnostics](#residual-diagnostics)
+- [Why SARIMA Was Considered](#Why SARIMA Was Considered)
 - [SARIMA Model](#sarima-model)
 - [Final Forecasts](#final-forecasts)
 - [Key Conclusions](#key-conclusions)
@@ -171,15 +171,13 @@ For this reason, the trend component was removed from the final specification. T
 The final forecasting model therefore retained a multiplicative seasonal structure without a trend component, as this specification delivered more stable forecasts, lower validation errors, and substantially stronger improvements over the Seasonal Naive benchmark across multiple out-of-sample periods.
 
 ## Why SARIMA Was Considered
+The final Holt-Winters model delivered stable forecasts and consistently outperformed the Seasonal Naive benchmark. However, further analysis suggested that some information remained unexplained.
 
-Residual diagnostics revealed that forecast errors were centered close to zero, indicating no meaningful systematic forecasting bias.
+Residual diagnostics revealed statistically significant autocorrelation in the forecast errors. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
 
-However, autocorrelation analysis identified statistically significant residual dependence. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the null hypothesis of independent residuals (p < 0.05).
+These findings indicate that although Holt-Winters successfully captured the strong seasonal patterns in passenger traffic, some temporal dependencies remained in the data.
 
-These findings suggest that although the Holt-Winters model successfully captured the strong seasonal structure of passenger traffic, some temporal patterns remained unexplained. In other words, the residuals still contained information that the model was unable to capture.
-
-This provided a strong motivation to evaluate SARIMA, a forecasting model specifically designed to account for autocorrelation. By explicitly modelling the relationship between current and past observations, SARIMA had the potential to further improve forecasting accuracy.
-
+This provided a strong motivation to evaluate SARIMA, a forecasting framework specifically designed to model autocorrelation. By incorporating both seasonal patterns and relationships between current and past observations, SARIMA had the potential to further improve forecasting accuracy.
 
 ## Key Conclusions
 - Strong seasonality is the dominant characteristic of passenger traffic.
