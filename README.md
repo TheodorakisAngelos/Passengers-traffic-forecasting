@@ -10,7 +10,7 @@
 - [Trend Component Evaluation](#trend-component-evaluation)
 - [Evaluating Improvement Against the Baseline](#evaluating-improvement-against-the-baseline)
 - [Final Holt-Winters Model](#final-holt-winters-model)
-- [Why SARIMA Was Considered](#Why SARIMA Was Considered)
+- [Why SARIMA Was Considered](#why-sarima-was-considered)
 - [SARIMA Model](#sarima-model)
 - [Final Forecasts](#final-forecasts)
 - [Key Conclusions](#key-conclusions)
