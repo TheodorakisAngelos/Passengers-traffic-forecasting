@@ -40,7 +40,7 @@ We begin by visualizing the available monthly passenger traffic data.
 
 ### Historical AIA Passenger Traffic
 <p align="center">
-  <img src="images/AIA_Monthly_Passengers.png" width="900">
+  <img src="images/AIA_Monthly_Passengers.png" width="1000">
 </p>
 
 Several key patterns emerge:
@@ -106,7 +106,6 @@ The average Baseline MAPE and average Holt-Winters MAPE are then calculated acro
 ```math
 Improvement = \frac{Baseline\ MAPE - Model\ MAPE}{Baseline\ MAPE}
 ```
-
 
 This approach ensures that each candidate training window is evaluated not only on forecasting accuracy but also on the additional predictive value it provides beyond a simple year-over-year forecast.
 
@@ -182,7 +181,7 @@ The final Holt-Winters model delivered stable forecasts and consistently outperf
 Residual diagnostics revealed statistically significant autocorrelation in the forecast errors. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
 
 <p align="center">
-  <img src="images/Residual_Autocorrelation_HW.png" width="900">
+  <img src="images/Residual_Autocorrelation_HW.png" width="700">
 </p>
 
 These findings indicate that the residuals were not completely random and still contained autocorrelation. In other words, some information remained unexplained by the Holt-Winters model.
