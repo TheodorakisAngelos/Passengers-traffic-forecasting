@@ -158,7 +158,7 @@ By contrast, the seasonality-only model consistently outperformed the benchmark 
 | 2024+ | 21.41% | 52.26% |
 
 <p align="center">
-  <img src="images/Improvement_over_Seasonal_Naive_Benchmark.png" width="900">
+  <img src="images/Improvement_over_Seasonal_Naive_Benchmark.png" width="800">
 </p>
 
 
@@ -178,7 +178,7 @@ The final forecasting model therefore retained a multiplicative seasonal structu
 The resulting forecast preserves the strong seasonal behaviour observed throughout the historical data. Passenger traffic is expected to peak during the summer months and remain lower during the winter season, consistent with historical travel patterns at Athens International Airport.
 
 <p align="center">
-  <img src="images/HW_forecast_using_best_window_(2019+)_no_trend.png" width="800">
+  <img src="images/HW_forecast_using_best_window_(2019+)_no_trend.png" width="800" height="800">
 </p>
 
 ## Why SARIMA Was Considered
@@ -187,7 +187,7 @@ The final Holt-Winters model delivered stable forecasts and consistently outperf
 Residual diagnostics revealed statistically significant autocorrelation in the forecast errors. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
 
 <p align="center">
-  <img src="images/Residual_Autocorrelation_HW.png" width="800" height="800">
+  <img src="images/Residual_Autocorrelation_HW.png" width="600" height="400">
 </p>
 
 These findings indicate that the residuals were not completely random and still contained autocorrelation. In other words, some information remained unexplained by the Holt-Winters model.
