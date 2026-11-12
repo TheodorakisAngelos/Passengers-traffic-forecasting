@@ -39,7 +39,9 @@ As with all statistical forecasting models, unexpected external events such as t
 We begin by visualizing the available monthly passenger traffic data. 
 
 ### Historical AIA Passenger Traffic
-![Historical Passenger Traffic](images/AIA_Monthly_Passengers.png)
+<p align="center">
+  <img src="images/AIA_Monthly_Passengers.png" width="900">
+</p>
 
 Several key patterns emerge:
 
@@ -105,6 +107,7 @@ The average Baseline MAPE and average Holt-Winters MAPE are then calculated acro
 Improvement = \frac{Baseline\ MAPE - Model\ MAPE}{Baseline\ MAPE}
 ```
 
+
 This approach ensures that each candidate training window is evaluated not only on forecasting accuracy but also on the additional predictive value it provides beyond a simple year-over-year forecast.
 
 ## Trend Component Evaluation
@@ -134,7 +137,9 @@ In most cases, adding a trend component resulted in higher forecasting errors. W
 
 The results indicate that the benefit of including a trend component is inconsistent. Although the trend model performed slightly better for the 2020+ training window (15.64% vs 18.39%), it produced substantially higher errors for most of the remaining candidate windows. The most extreme example was the 2019+ window, where forecast error increased from 21.71% to 74.50% after adding a trend component. 
 
-![Trend vs No Trend](images/Trend_vs_No_trend_Model_comparison.png)
+<p align="center">
+  <img src="images/Trend_vs_No_trend_Model_comparison.png" width="900">
+</p>
 
 ## Evaluating Improvement Against the Baseline
 After comparing the two Holt-Winters specifications, the next step is to evaluate whether they provide any improvement over the Seasonal Naive benchmark.
@@ -153,7 +158,10 @@ By contrast, the seasonality-only model consistently outperformed the benchmark 
 | 2023+ | -11.34% | 47.56% |
 | 2024+ | 21.41% | 52.26% |
 
-![Improvement vs Baseline](images/Improvement_over_Seasonal_Naive_Benchmark.png)
+<p align="center">
+  <img src="images/Improvement_over_Seasonal_Naive_Benchmark.png" width="900">
+</p>
+
 
 Model diagnostics provided additional insight. In several validation periods, the trend smoothing parameter (β) was close to 1, indicating that the model placed very high weight on the most recent observations when estimating future growth. As a result, the model became highly sensitive to short-term fluctuations in passenger traffic. Rather than identifying a stable underlying pattern, the trend component reacted strongly to temporary changes and introduced additional forecast uncertainty.
 
@@ -173,11 +181,13 @@ The final Holt-Winters model delivered stable forecasts and consistently outperf
 
 Residual diagnostics revealed statistically significant autocorrelation in the forecast errors. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
 
-![Residual Autocorrelation](images/Residual_Autocorrelation_HW.png)
+<p align="center">
+  <img src="images/Residual_Autocorrelation_HW.png" width="900">
+</p>
 
-These findings indicate that although Holt-Winters successfully captured the strong seasonal patterns in passenger traffic, some temporal dependencies remained in the data.
+These findings indicate that the residuals were not completely random and still contained autocorrelation. In other words, some information remained unexplained by the Holt-Winters model.
 
-This provided a strong motivation to evaluate SARIMA, a forecasting framework specifically designed to model autocorrelation. By incorporating both seasonal patterns and relationships between current and past observations, SARIMA had the potential to further improve forecasting accuracy.
+This provided a strong motivation to evaluate SARIMA. Unlike Holt-Winters, SARIMA explicitly models autocorrelation in the time series by incorporating relationships between current and past observations. As a result, it may be able to capture patterns that remained unexplained by the Holt-Winters model and improve forecasting accuracy.
 
 ## Key Conclusions
 - Strong seasonality is the dominant characteristic of passenger traffic.
