@@ -38,9 +38,9 @@ As with all statistical forecasting models, unexpected external events such as t
 ## Exploratory Analysis
 We begin by visualizing the available monthly passenger traffic data. 
 
-### <h3 align="center">Historical AIA Passenger Traffic</h3>
+#### <h3 align="center">Historical AIA Passenger Traffic</h3>
 <p align="center">
-  <img src="images/AIA_Monthly_Passengers.png" width="1000">
+  <img src="images/AIA_Monthly_Passengers.png" width="800" height="600">
 </p>
 
 Several key patterns emerge:
@@ -175,13 +175,19 @@ For this reason, the trend component was removed from the final specification. T
 ## Final Holt-Winters Model
 The final forecasting model therefore retained a multiplicative seasonal structure without a trend component, as this specification delivered more stable forecasts, lower validation errors, and substantially stronger improvements over the Seasonal Naive benchmark across multiple out-of-sample periods.
 
+The resulting forecast preserves the strong seasonal behaviour observed throughout the historical data. Passenger traffic is expected to peak during the summer months and remain lower during the winter season, consistent with historical travel patterns at Athens International Airport.
+
+<p align="center">
+  <img src="images/HW_forecast_using_best_window_(2019+)_no_trend.png" width="800">
+</p>
+
 ## Why SARIMA Was Considered
 The final Holt-Winters model delivered stable forecasts and consistently outperformed the Seasonal Naive benchmark. However, further analysis suggested that some information remained unexplained.
 
 Residual diagnostics revealed statistically significant autocorrelation in the forecast errors. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
 
 <p align="center">
-  <img src="images/Residual_Autocorrelation_HW.png" width="700">
+  <img src="images/Residual_Autocorrelation_HW.png" width="600" height="400">
 </p>
 
 These findings indicate that the residuals were not completely random and still contained autocorrelation. In other words, some information remained unexplained by the Holt-Winters model.
