@@ -170,14 +170,15 @@ For this reason, the trend component was removed from the final specification. T
 ## Final Holt-Winters Model
 The final forecasting model therefore retained a multiplicative seasonal structure without a trend component, as this specification delivered more stable forecasts, lower validation errors, and substantially stronger improvements over the Seasonal Naive benchmark across multiple out-of-sample periods.
 
-## Residual Diagnostics
+## Why SARIMA Was Considered
+
 Residual diagnostics revealed that forecast errors were centered close to zero, indicating no meaningful systematic forecasting bias.
 
 However, autocorrelation analysis identified statistically significant residual dependence. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the null hypothesis of independent residuals (p < 0.05).
 
-## Why SARIMA Was Considered
+These findings suggest that although the Holt-Winters model successfully captured the strong seasonal structure of passenger traffic, some temporal patterns remained unexplained. In other words, the residuals still contained information that the model was unable to capture.
 
-Although the final Holt-Winters specification produced strong results, residual diagnostics showed that some autocorrelation remained unexplained. This suggested that a model capable of explicitly modelling autocorrelation, such as SARIMA, might further improve forecasting performance.
+This provided a strong motivation to evaluate SARIMA, a forecasting model specifically designed to account for autocorrelation. By explicitly modelling the relationship between current and past observations, SARIMA had the potential to further improve forecasting accuracy.
 
 
 ## Key Conclusions
