@@ -72,17 +72,17 @@ Selecting the training period is often just as important as selecting the foreca
 
 Instead of relying on a single train-test split, multiple out-of-sample validation sets are created. The minimum training period is set to two years, while the test period is always one year. For example, when 2019 is selected as the starting year, the following validation sets are created:
 
-•	Train: 2019-2020 → Test: 2021
-•	Train: 2019-2021 → Test: 2022
-•	Train: 2019-2022 → Test: 2023
-•	...and so on until the most recent available year.
+- Train: 2019-2020 → Test: 2021
+- Train: 2019-2021 → Test: 2022
+- Train: 2019-2022 → Test: 2023
+- ...and so on until the most recent available year.
 
-The same process are then repeated using different starting years. For example, when 2020 is selected as the starting year:
+The same process is then repeated using different starting years. For example, when 2020 is selected as the starting year:
 
-•	Train: 2020-2021 → Test: 2022
-•	Train: 2020-2022 → Test: 2023
-•	Train: 2020-2023 → Test: 2024
-•	...and so on.
+- Train: 2020-2021 → Test: 2022
+- Train: 2020-2022 → Test: 2023
+- Train: 2020-2023 → Test: 2024
+- ...and so on.
 
 This approach allows forecasting performance to be evaluated across different periods, including both the COVID-19 disruption and the recovery that followed.
 
@@ -98,9 +98,7 @@ The average Baseline MAPE and average Holt-Winters MAPE are then calculated acro
 
 
 ```text
-Improvement =
-(Baseline MAPE - Model MAPE)
-/ Baseline MAPE
+Improvement = (Baseline MAPE - Model MAPE) / Baseline MAPE
 ```
 
 This approach ensures that each candidate training window is evaluated not only on forecasting accuracy but also on the additional predictive value it provides beyond a simple year-over-year forecast.
