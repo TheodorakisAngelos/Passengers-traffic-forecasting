@@ -40,7 +40,7 @@ We begin by visualizing the available monthly passenger traffic data.
 
 #### <h3 align="center">Historical AIA Passenger Traffic</h3>
 <p align="center">
-  <img src="images/AIA_Monthly_Passengers.png" width="800" height="600">
+  <img src="images/AIA_Monthly_Passengers.png" width="900" height="900">
 </p>
 
 Several key patterns emerge:
@@ -137,7 +137,7 @@ In most cases, adding a trend component resulted in higher forecasting errors. W
 The results indicate that the benefit of including a trend component is inconsistent. Although the trend model performed slightly better for the 2020+ training window (15.64% vs 18.39%), it produced substantially higher errors for most of the remaining candidate windows. The most extreme example was the 2019+ window, where forecast error increased from 21.71% to 74.50% after adding a trend component. 
 
 <p align="center">
-  <img src="images/Trend_vs_No_trend_Model_comparison.png" width="900">
+  <img src="images/Trend_vs_No_trend_Model_comparison.png" width="700" height ="500">
 </p>
 
 ## Evaluating Improvement Against the Baseline
@@ -187,7 +187,7 @@ The final Holt-Winters model delivered stable forecasts and consistently outperf
 Residual diagnostics revealed statistically significant autocorrelation in the forecast errors. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
 
 <p align="center">
-  <img src="images/Residual_Autocorrelation_HW.png" width="600" height="400">
+  <img src="images/Residual_Autocorrelation_HW.png" width="800" height="800">
 </p>
 
 These findings indicate that the residuals were not completely random and still contained autocorrelation. In other words, some information remained unexplained by the Holt-Winters model.
