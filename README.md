@@ -2,73 +2,102 @@
 
 ## Project Summary
 
-- Forecast horizon: Oct 2026 - Sep 2027
-- Dataset: Monthly passenger traffic (2019-2026)
-- Models evaluated:
-  - Holt-Winters Exponential Smoothing
-  - SARIMA
-- Validation approach:
-  - Rolling-origin validation
-  - Seasonal Naive benchmark
-- Final Holt-Winters specification:
-  - Multiplicative seasonality
-  - No trend component
-- Best training window:
-  - 2019+
+## Project Summary
 
-In this project, we forecast passenger traffic at Athens International Airport using monthly data from 2019 onwards. Two forecasting approaches are evaluated: the Holt-Winters Exponential Smoothing model and a Seasonal ARIMA (SARIMA) model.
-The forecasting horizon covers the period from October 2026 through September 2027. This relatively short forecasting window was deliberately chosen because long-term passenger demand forecasting typically requires additional explanatory variables such as GDP growth, tourism indicators, airline capacity, route development plans, and broader economic conditions. For a one-year horizon, however, statistical time series models such as Holt-Winters and SARIMA are generally capable of providing accurate forecasts based solely on historical passenger traffic patterns.
-As with any statistical forecasting approach, the models cannot anticipate unexpected external shocks. Events such as the COVID-19 pandemic fall outside the information contained in the historical data and therefore cannot be predicted. One notable observation is that the training data include periods of exceptionally high uncertainty. As a result, the models produce very wide confidence intervals, indicating substantial uncertainty regarding future outcomes. Although confidence intervals were generated, they became exceptionally wide due to the inclusion of highly volatile periods such as the COVID-19 pandemic. As a result, the analysis focuses primarily on point forecasts, while acknowledging the significant uncertainty associated with future passenger demand.
+| Item | Value |
+|--------|--------|
+| Forecast Horizon | Oct 2026 - Sep 2027 |
+| Dataset | Monthly Passenger Traffic (2019-2026) |
+| Models Evaluated | Holt-Winters, SARIMA |
+| Validation | Rolling-Origin Validation |
+| Benchmark | Seasonal Naive |
+| Final Holt-Winters Specification | Multiplicative Seasonality, No Trend |
+| Selected Training Window | 2019+ |
+
+## Contents
+1. Project Summary
+2. Exploratory Analysis
+3. Baseline Forecast
+4. Holt-Winters Model
+5. Validation Strategy
+6. Trend Component Evaluation
+7. Improvement vs Baseline
+8. Final Holt-Winters Model
+9. Residual Diagnostics
+10. SARIMA Model
+11. Final Forecasts
+    
+In this project, we forecast passenger traffic at Athens International Airport using monthly data from 2019 onwards. Two forecasting methods are evaluated: **Holt-Winters Exponential Smoothing** and **Seasonal ARIMA (SARIMA)**.
+
+The forecasting horizon covers the period from October 2026 through September 2027. This short forecasting window is chosen because longer-term passenger forecasts typically require additional information such as GDP growth, tourism demand, airline capacity and route development plans. For a one-year horizon, however, time series models such as Holt-Winters and SARIMA can provide reliable forecasts using only historical passenger traffic data.
+
+As with all statistical forecasting models, unexpected external events such as the COVID-19 pandemic cannot be predicted. Because the historical data include this highly volatile period, the resulting confidence intervals are unusually wide. As a result, the analysis focuses primarily on point forecasts while acknowledging the uncertainty associated with future passenger demand.
+
 
 ## Exploratory Analysis
 We begin by visualizing the available monthly passenger traffic data. 
 
 ![Historical Passenger Traffic](images/AIA_Monthly_Passengers.png)
 
-Several key patterns immediately emerge:
-	Strong seasonality is present throughout the series.
-	Passenger traffic follows an overall upward trend.
-	Winter months consistently exhibit lower demand.
-	Summer months represent the peak travel season.
-	August is typically the strongest month of the year in terms of passenger traffic.
+Several key patterns emerge:
+
+- Strong seasonality is present throughout the series.
+- Passenger traffic follows an overall upward trend.
+- Demand is lower during the winter months and peaks during the summer tourist season.
+- August is typically the busiest month of the year, while February is the weakest.
+
 These observations are consistent with the seasonality expected from a tourism-driven market of Greece.
 
-**Establishing a Baseline Forecast**
-Before developing more advanced forecasting models, a simple baseline forecast is constructed. The baseline assumes that passenger traffic for each month will be equal to the traffic observed during the same month of the previous year.
-The purpose of this benchmark is to determine whether more sophisticated forecasting methods actually add predictive value. If a complex model cannot outperform this simple year-over-year approach, then there is little justification for using it.
-To evaluate forecasting performance, Actual versus Baseline forecasts are compared over the test period. Forecast accuracy is measured using the Mean Absolute Percentage Error (MAPE), calculated from the monthly forecast errors. This baseline MAPE serves as the benchmark against which all subsequent models will be assessed.
 
-**Holt-Winters Model**
-The first forecasting model evaluated is the Holt-Winters Exponential Smoothing model.
-Given the characteristics of airport traffic, a multiplicative seasonal structure is initially selected. This assumption implies that seasonal effects increase proportionally with the level of passenger traffic. In other words, seasonal peaks and troughs become larger as total traffic grows.
-An additive trend component is also introduced to capture the long-term growth observed in the series.
-The model estimates the optimal smoothing parameters (α, β, γ) by minimizing the Sum of Squared Errors (SSE) over the training data. Through this process, the model derives estimates for the underlying level, trend, and seasonal components of the series.
-Forecasts are then generated by projecting the final estimated level and trend forward while repeating the seasonal pattern observed in the most recent annual cycle. Because this approach assumes that historical seasonal behaviour remains relatively stable, Holt-Winters is generally well suited for short- to medium-term forecasting horizons such as the 12-month period examined in this project.
+## Establishing a Baseline Forecast
+Before developing our forecasting models, we create a simple baseline forecast. The baseline assumes that passenger traffic in each month will be equal to the traffic observed in the same month of the previous year.
+
+The purpose of this benchmark is to decide whether more advanced forecasting methods provide additional predictive value. If a complex model cannot outperform this simple year-over-year approach, then there is no justification for using it.
+
+To evaluate performance, baseline forecasts are compared with actual passenger traffic over the test periods. Forecast accuracy is measured using the Mean Absolute Percentage Error (MAPE). This baseline MAPE serves as the benchmark against which all subsequent models are evaluated.
+
+
+## Holt-Winters Model
+The first forecasting model evaluated is Holt-Winters Exponential Smoothing.
+
+Given the characteristics of airport traffic, a multiplicative seasonal structure is initially selected. This means that seasonal fluctuations increase as passenger traffic grows. In other words, peak and low traffic periods become larger when overall passenger volumes are higher.
+
+An additive trend component is also included to capture the long-term growth observed in the data.
+
+The model estimates the optimal smoothing parameters (α, β, γ) and identifies the underlying level, trend, and seasonal pattern of the series based on historical passenger traffic.
+
+Forecasts are then generated by projecting the final estimated level and trend forward while repeating the seasonal pattern observed in the most recent annual cycle. Because this approach assumes that historical seasonal behaviour remains stable, Holt-Winters is generally well suited for short- to medium-term forecasting horizons, such as the 12-month period examined here.
+
 
 ## Model Selection and Validation Strategy
+Selecting the training period is often just as important as selecting the forecasting model itself. Rather than choosing a single training window, a rolling-origin validation framework is used to identify the period that produced the most reliable forecasts. Model performance is evaluated using Holt-Winters Exponential Smoothing and compared with a Seasonal Naive benchmark.
 
-Selecting the appropriate training window is often as important as selecting the forecasting model itself. Rather than arbitrarily choosing a single training period, a rolling-origin validation framework was implemented using Holt-Winters Exponential Smoothing and benchmarked against a Seasonal Naive model. The objective was to identify the training window that produced the most reliable and robust forecasts across different market conditions.
-Instead of evaluating the model on a single holdout period, multiple out-of-sample validation sets were created. The minimum training window was set to two years, while the test period was always one year. For example, when 2019 was selected as the starting year, the following validation sets were created:
+Instead of relying on a single train-test split, multiple out-of-sample validation sets are created. The minimum training period is set to two years, while the test period is always one year. For example, when 2019 is selected as the starting year, the following validation sets are created:
 
-	Train: 2019-2020 → Test: 2021
-	Train: 2019-2021 → Test: 2022
-	Train: 2019-2022 → Test: 2023
-	...and so on until the most recent available year.
-  
-The same process was then repeated using different starting years. For example, when 2020 was selected as the starting year:
-	Train: 2020-2021 → Test: 2022
-	Train: 2020-2022 → Test: 2023
-	Train: 2020-2023 → Test: 2024
-	...and so on.
-  
-This approach allowed forecasting performance to be evaluated across different historical periods, including both the COVID-19 disruption and the subsequent recovery phase.
-For each validation set, monthly Absolute Percentage Errors (APE) were calculated over the test year and averaged to produce a Mean Absolute Percentage Error (MAPE). The average MAPE across all validation sets was then calculated for each candidate starting year, providing an overall measure of forecasting accuracy for that particular training window.
+•	Train: 2019-2020 → Test: 2021
+•	Train: 2019-2021 → Test: 2022
+•	Train: 2019-2022 → Test: 2023
+•	...and so on until the most recent available year.
 
-One important consideration is that not all starting years provide the same number of validation sets. For example, using 2024 as the starting year produces only a single train-test split (Train: 2024-2025, Test: 2026), resulting in a very limited validation sample. To ensure a sufficiently robust evaluation, only starting years with at least 3 validation sets were considered during model selection.
+The same process are then repeated using different starting years. For example, when 2020 is selected as the starting year:
 
-The primary evaluation metric was MAPE. However, selecting a model solely based on the lowest average MAPE can be misleading. Different train-test combinations are not equally challenging. Extraordinary events such as the COVID-19 pandemic can influence both the training and testing data. In the training period, such events may distort the underlying patterns learned by the model, while in the test period they can substantially increase forecasting errors. As a result, a model may appear worse simply because it was trained or evaluated on a more difficult period.
-To address this issue, model performance was assessed relative to a simple Seasonal Naive benchmark. For each validation set, the Holt-Winters MAPE was compared against the corresponding baseline MAPE, where passenger traffic was assumed to be equal to the traffic observed during the same month of the previous year.
-The average Baseline MAPE and average Holt-Winters MAPE were then calculated across all validation sets for each candidate starting year. Rather than selecting the model with the lowest average MAPE, the final selection criterion was the relative improvement achieved over the baseline:
+•	Train: 2020-2021 → Test: 2022
+•	Train: 2020-2022 → Test: 2023
+•	Train: 2020-2023 → Test: 2024
+•	...and so on.
+
+This approach allows forecasting performance to be evaluated across different periods, including both the COVID-19 disruption and the recovery that followed.
+
+For each validation set, monthly Absolute Percentage Errors (APE) are calculated over the test year and then averaged to produce a Mean Absolute Percentage Error (MAPE). The average MAPE across all validation sets is then calculated for each candidate starting year.
+
+Not all starting years provide the same number of validation sets. For example, using 2024 as the starting year produces only a single train-test split (Train: 2024-2025, Test: 2026), resulting in a very limited validation sample. To ensure a more reliable comparison, only starting years with at least 3 validation sets are considered during model selection.
+
+The primary evaluation metric is MAPE. However, comparing models using MAPE alone can be misleading because some train-test combinations are naturally more difficult than others. Events such as the COVID-19 pandemic can affect both the training and test periods, leading to unusually high forecasting errors.
+
+To account for this, model performance is also evaluated relative to a simple Seasonal Naive benchmark. For each validation set, the Holt-Winters MAPE is compared with the corresponding baseline MAPE, where passenger traffic is assumed to be equal to the traffic observed in the same month of the previous year.
+
+The average Baseline MAPE and average Holt-Winters MAPE are then calculated across all validation sets for each candidate starting year. Rather than selecting the model with the lowest average MAPE, the final selection criterion is the relative improvement achieved over the baseline:
+
 
 ```text
 Improvement =
@@ -76,22 +105,23 @@ Improvement =
 / Baseline MAPE
 ```
 
-This methodology ensured that each candidate training window was evaluated not only on absolute forecasting accuracy but also on the additional predictive value it delivered beyond a simple year-over-year forecast.
-The analysis showed that Holt-Winters consistently outperformed the Seasonal Naive benchmark across all candidate windows. Although the 2024+ window achieved the lowest observed average MAPE, this result was based on only a single validation set and therefore provided limited evidence of model stability. In contrast, the 2019+ window was evaluated across six independent test periods and consistently outperformed the benchmark, providing stronger evidence of forecasting robustness across different historical periods.
-Consequently, the final model selection was based on the training window that delivered the largest improvement over the Seasonal Naive benchmark while also demonstrating stable performance across multiple validation periods. This approach reduces the risk of selecting a model that performs well on a single test year but fails to generalize reliably to future data.
+This approach ensures that each candidate training window is evaluated not only on forecasting accuracy but also on the additional predictive value it provides beyond a simple year-over-year forecast.
 
-**Trend Component Evaluation**
-Given the strong growth observed in passenger traffic following the COVID-19 recovery period, it initially appeared reasonable to include an explicit trend component in the forecasting model. Passenger volumes had increased significantly between 2021 and 2026 and, from a business perspective, one could argue that this upward trajectory should continue into the forecast horizon.
-To test this hypothesis, the Holt-Winters framework was evaluated using two alternative specifications:
-	Additive Trend + Multiplicative Seasonality
-	Multiplicative Seasonality only
-Both models were assessed using the same rolling-origin validation framework described previously and were benchmarked against the Seasonal Naive forecast.
-The expectation was that the trend-enhanced model would capture the airport's long-term growth more effectively and therefore achieve lower forecasting errors. 
-Surprisingly, the validation results showed the opposite.
-Across most training windows, the inclusion of a trend component resulted in substantially worse out-of-sample performance. While the seasonal-only model consistently outperformed the Seasonal Naive benchmark, the trend-enhanced specification often generated significantly higher forecast errors and, in several cases, underperformed the benchmark itself.
+## Trend Component Evaluation
+Following the strong recovery in passenger traffic after COVID-19, it seemed reasonable to include a trend component in the Holt-Winters model. Passenger volumes had increased significantly between 2021 and 2026, suggesting that this growth might continue during the forecast period.
+To test this assumption, the Holt-Winters framework was evaluated using two alternative specifications:
 
-Start Year	Baseline MAPE	Trend + Seasonal Average MAPE
-	Seasonal Only Average MAPE
+1.	Additive Trend + Multiplicative Seasonality
+2.	Multiplicative Seasonality only
+
+Both models were assessed using the same rolling-origin validation framework described previously and were compared against the Seasonal Naive benchmark.
+
+The expectation was that the trend model would produce more accurate forecasts by capturing the airport's long-term growth. 
+
+Surprisingly, the results showed the opposite.
+
+In most cases, adding a trend component resulted in higher forecasting errors. While the seasonal-only model consistently outperformed the Seasonal Naive benchmark, the trend model often produced worse results and in some cases even underperformed the benchmark itself.
+
 
 | Start Year | Baseline MAPE | Trend + Seasonal | Seasonal Only |
 |------------|-------------:|-----------------:|--------------:|
@@ -102,41 +132,57 @@ Start Year	Baseline MAPE	Trend + Seasonal Average MAPE
 | 2023+ | 5.69% | 6.34% | 2.98% |
 | 2024+ | 4.55% | 3.57% | 2.17% |
 
+The results indicate that the benefit of including a trend component is inconsistent. Although the trend model performed slightly better for the 2020+ training window (15.64% vs 18.39%), it produced substantially higher errors for most of the remaining candidate windows. The most extreme example was the 2019+ window, where forecast error increased from 21.71% to 74.50% after adding a trend component. 
  
 ![Trend vs No Trend](images/Trend_vs_No_trend_Model_comparison.png)
 
-The results indicate that the benefit of including a trend component is highly inconsistent. Although the trend model slightly outperformed the seasonal-only specification for the 2020+ training window (15.64% vs 18.39%), it produced substantially worse forecasting accuracy for most other candidate windows. The most striking example is the 2019+ window, where forecast error increased from 21.71% to 74.50% after introducing a trend component. 
+## Evaluating Improvement Against the Baseline
+After comparing the two Holt-Winters specifications, the next step is to evaluate whether they provide any improvement over the Seasonal Naive benchmark.
+
+The trend model delivered inconsistent results. In most cases, it failed to outperform the Seasonal Naive benchmark and sometimes produced less accurate forecasts than simply using last year's passenger traffic. 
+
+By contrast, the seasonality-only model consistently outperformed the benchmark across all training windows.
 
 Improvement vs Baseline
-Start Year	Trend + Seasonal	Seasonal Only
-2019+	-76.27%	48.63%
-2020+	18.27%	3.91%
-2021+	-176.95%	15.53%
-2022+	-8.33%	37.90%
-2023+	-11.34%	47.56%
-2024+	21.41%	52.26%
+| Start Year | Trend + Seasonal | Seasonal Only |
+|------------|----------------:|--------------:|
+| 2019+ | -76.27% | 48.63% |
+| 2020+ | 18.27% | 3.91% |
+| 2021+ | -176.95% | 15.53% |
+| 2022+ | -8.33% | 37.90% |
+| 2023+ | -11.34% | 47.56% |
+| 2024+ | 21.41% | 52.26% |
 
-
-
-While the trend specification occasionally achieved competitive results in individual validation periods, its performance was inconsistent. Four of the six candidate windows produced a negative improvement relative to the Seasonal Naive benchmark, meaning that the model actually performed worse than simply repeating the previous year's passenger traffic. In contrast, the seasonality-only specification outperformed the benchmark across every evaluated training window.
  
 ![Improvement vs Baseline](images/Improvement_over_Seasonal_Naive_Benchmark.png)
 
-The deterioration was particularly pronounced when the training data contained both the COVID-19 collapse and the subsequent recovery period. Rather than learning a stable long-term trend, the model attempted to extrapolate extraordinary growth patterns that were specific to the recovery phase.
-Inspection of the fitted parameters provided additional insight. In multiple validation periods, the trend smoothing parameter (β) converged towards values close to 1.0. This behaviour indicates that the model placed extremely high weight on the most recent observations when estimating trend.
-As a result, the model continuously adjusted its estimate of future growth based on short-term fluctuations, making forecasts overly sensitive to temporary changes in passenger traffic. Instead of capturing a stable underlying signal, the trend component amplified noise and introduced additional forecast volatility.
-By contrast, the seasonality-only specification produced considerably more stable results. The model focused on the strongest and most reliable feature present in the data: the highly recurring annual seasonal pattern of passenger traffic.
-This outcome is also intuitively consistent with the business context. Passenger volumes are heavily influenced by factors such as tourism demand, airline capacity, route development, economic growth, and geopolitical conditions. While these drivers certainly contribute to long-term growth, they are not explicitly included in the model. Consequently, relying on historical passenger volumes alone to estimate future growth can lead to unstable trend estimates, particularly after a structural break such as the COVID-19 pandemic.
-An additional observation supporting this conclusion is that the best-performing seasonal-only model was obtained using the 2019+ training window, which achieved an average MAPE of 21.71% and improved upon the Seasonal Naive benchmark by 48.63% across six independent validation periods. In contrast, the trend-enhanced specification achieved its best result using the 2020+ window, with an average MAPE of 15.64% and an improvement of only 18.27% over the benchmark. Although the absolute MAPE appears lower, the model proved far less robust across validation periods and frequently underperformed the baseline forecast.
-Consequently, the trend component was removed from the final specification. The analysis demonstrated that for a twelve-month forecasting horizon, passenger traffic at Athens International Airport is better described by strong seasonal behaviour than by an explicit extrapolation of recent growth trends.
+Model diagnostics provided additional insight. In several validation periods, the trend smoothing parameter (β) was close to 1, indicating that the model placed very high weight on the most recent observations when estimating future growth. As a result, the model became highly sensitive to short-term fluctuations in passenger traffic. Rather than identifying a stable underlying pattern, the trend component reacted strongly to temporary changes and introduced additional forecast uncertainty.
+
+By contrast, the seasonality-only specification produced much more stable results. The model focused on the strongest and most reliable feature present in the data: the recurring annual seasonality of passenger traffic.
+
+The best-performing seasonality-only model was obtained using the 2019+ training window. It achieved an average MAPE of 21.71% and improved forecasting accuracy by 48.63% compared with the Seasonal Naive benchmark across six validation periods. The 2024+ training window was not considered for model selection because only starting years with at least three validation periods were included in the evaluation.
+
+The best result for the trend-enhanced model was obtained using the 2020+ training window, with an average MAPE of 15.64% and an improvement of 18.27% over the benchmark. Although this MAPE was lower, the model's performance was much less consistent across the different validation periods and most times failed to outperform the baseline forecast.
+
+For this reason, the trend component was removed from the final specification. The results showed that, for a 12-month forecasting horizon, passenger traffic at Athens International Airport is better explained by strong seasonal patterns than by extending recent growth trends into the future.
+
+## Final Holt-Winters Model
 The final forecasting model therefore retained a multiplicative seasonal structure without a trend component, as this specification delivered more stable forecasts, lower validation errors, and substantially stronger improvements over the Seasonal Naive benchmark across multiple out-of-sample periods.
 
-**Final Holt-Winters Model**
-Based on the validation results, the final specification selected for forecasting was a multiplicative seasonal Holt-Winters model without a trend component, trained using data from 2019 onwards. This configuration achieved the largest improvement relative to the Seasonal Naive benchmark while maintaining stable forecasting performance across six independent validation periods.
-
-**Residual Diagnostics**
+## Residual Diagnostics
 Residual diagnostics revealed that forecast errors were centered close to zero, indicating no meaningful systematic forecasting bias.
+
 However, autocorrelation analysis identified statistically significant residual dependence. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the null hypothesis of independent residuals (p < 0.05).
-These findings suggest that although the Holt-Winters model successfully captured the dominant seasonal structure of passenger demand, some short-term temporal patterns remained unexplained. Consequently, the residuals cannot be considered pure white noise.
-This finding suggests that some information remains unexploited by the Holt-Winters framework. Models capable of explicitly modelling autocorrelation, such as SARIMA, may further improve forecasting performance.
+
+These findings suggest that while the Holt-Winters model captured the main seasonal behaviour of passenger traffic, it was unable to explain all of the structure present in the data.
+
+As a result, some predictive information remained unused. This indicated that a more flexible model capable of explicitly modelling autocorrelation, such as SARIMA, might achieve better forecasting performance.
+
+
+## Key Conclusions
+- Strong seasonality is the dominant characteristic of passenger traffic.
+- The trend component reduced forecasting performance in most validation windows.
+- The seasonality-only Holt-Winters model consistently outperformed the Seasonal Naive benchmark.
+- Residual diagnostics indicated remaining autocorrelation.
+- These results suggest that SARIMA may further improve forecast accuracy.
 
