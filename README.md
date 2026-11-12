@@ -38,7 +38,7 @@ As with all statistical forecasting models, unexpected external events such as t
 ## Exploratory Analysis
 We begin by visualizing the available monthly passenger traffic data. 
 
-### Historical AIA Passenger Traffic
+### <h3 align="center">Historical AIA Passenger Traffic</h3>
 <p align="center">
   <img src="images/AIA_Monthly_Passengers.png" width="1000">
 </p>
