@@ -134,7 +134,6 @@ In most cases, adding a trend component resulted in higher forecasting errors. W
 
 The results indicate that the benefit of including a trend component is inconsistent. Although the trend model performed slightly better for the 2020+ training window (15.64% vs 18.39%), it produced substantially higher errors for most of the remaining candidate windows. The most extreme example was the 2019+ window, where forecast error increased from 21.71% to 74.50% after adding a trend component. 
 
-### Trend vs No Trend Comparison
 ![Trend vs No Trend](images/Trend_vs_No_trend_Model_comparison.png)
 
 ## Evaluating Improvement Against the Baseline
@@ -144,7 +143,7 @@ The trend model delivered inconsistent results. In most cases, it failed to outp
 
 By contrast, the seasonality-only model consistently outperformed the benchmark across all training windows.
 
-Improvement vs Baseline
+### Improvement vs Baseline
 | Start Year | Trend + Seasonal | Seasonal Only |
 |------------|----------------:|--------------:|
 | 2019+ | -76.27% | 48.63% |
@@ -154,7 +153,6 @@ Improvement vs Baseline
 | 2023+ | -11.34% | 47.56% |
 | 2024+ | 21.41% | 52.26% |
 
-### Improvement over the Seasonal Naive Benchmark
 ![Improvement vs Baseline](images/Improvement_over_Seasonal_Naive_Benchmark.png)
 
 Model diagnostics provided additional insight. In several validation periods, the trend smoothing parameter (β) was close to 1, indicating that the model placed very high weight on the most recent observations when estimating future growth. As a result, the model became highly sensitive to short-term fluctuations in passenger traffic. Rather than identifying a stable underlying pattern, the trend component reacted strongly to temporary changes and introduced additional forecast uncertainty.
@@ -174,6 +172,8 @@ The final forecasting model therefore retained a multiplicative seasonal structu
 The final Holt-Winters model delivered stable forecasts and consistently outperformed the Seasonal Naive benchmark. However, further analysis suggested that some information remained unexplained.
 
 Residual diagnostics revealed statistically significant autocorrelation in the forecast errors. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
+
+![Residual Autocorrelation](images/Residual_Autocorrelation_HW.png)
 
 These findings indicate that although Holt-Winters successfully captured the strong seasonal patterns in passenger traffic, some temporal dependencies remained in the data.
 
