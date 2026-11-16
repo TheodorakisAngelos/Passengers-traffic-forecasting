@@ -11,7 +11,7 @@
   - [Validation Framework](#validation-framework)
   - [Trend Component Evaluation](#trend-component-evaluation)
   - [Evaluating Improvement Against the Baseline](#evaluating-improvement-against-the-baseline)
-  - [HW Residual Diagnostics](#hw-residual-diagnostics)
+  - [HW Model Diagnostics](#hw-model-diagnostics)
   - [Final Holt-Winters Model](#final-holt-winters-model)
 
 - [SARIMA Model](#sarima-model)
@@ -176,7 +176,7 @@ By contrast, the seasonality-only model consistently outperformed the benchmark 
   <img src="images/Improvement_over_Seasonal_Naive_Benchmark.png" width="700" height ="500">
 </p>
 
-## HW Residual Diagnostics
+## HW Model Diagnostics
 Model diagnostics provided additional insight. In several validation periods, the trend smoothing parameter (β) was close to 1, indicating that the model placed very high weight on the most recent observations when estimating future growth. As a result, the model became highly sensitive to short-term fluctuations in passenger traffic. Rather than identifying a stable underlying pattern, the trend component reacted strongly to temporary changes and introduced additional forecast uncertainty.
 
 By contrast, the seasonality-only specification produced much more stable results. The model focused on the strongest and most reliable feature present in the data: the recurring annual seasonality of passenger traffic.
@@ -199,9 +199,7 @@ The resulting forecast preserves the strong seasonal behaviour observed througho
 
 # SARIMA Model
 ## Why SARIMA Was Considered
-The final Holt-Winters model delivered stable forecasts and consistently outperformed the Seasonal Naive benchmark. However, further analysis suggested that some information remained unexplained.
-
-Residual diagnostics revealed statistically significant autocorrelation in the forecast errors. The residual ACF showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
+We observed that that the final Holt-Winters model delivered stable forecasts and consistently outperformed the Seasonal Naive benchmark. However, residual diagnostics revealed autocorrelation in the forecast errors. The residual ACF plot showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
 
 <p align="center">
   <img src="images/Residual_Autocorrelation_HW.png" width="600" height="400">
@@ -209,12 +207,12 @@ Residual diagnostics revealed statistically significant autocorrelation in the f
 
 These findings indicate that the residuals were not completely random and still contained autocorrelation. In other words, some information remained unexplained by the Holt-Winters model.
 
-This provided a strong motivation to evaluate SARIMA. Unlike Holt-Winters, SARIMA explicitly models autocorrelation in the time series by incorporating relationships between current and past observations. As a result, it may be able to capture patterns that remained unexplained by the Holt-Winters model and improve forecasting accuracy.
+This provided our motivation to evaluate SARIMA. Unlike Holt-Winters, SARIMA explicitly models autocorrelation in the time series by incorporating relationships between current and past observations. As a result, it may be able to capture patterns that remained unexplained by the Holt-Winters model and improve forecasting accuracy.
 
 
 ## SARIMA Identification
 
-Before specifying a SARIMA model, the time series was examined using:
+Before specifying a SARIMA model, we examined our time series using the following:
 
 - **Autocorrelation Function (ACF)** to identify relationships between current passenger volumes and previous months.
 - **Partial Autocorrelation Function (PACF)** to identify the direct influence of individual lags after accounting for intermediate periods.
@@ -226,7 +224,7 @@ The ACF plot showed strong positive autocorrelation at short lags, indicating th
   <img src="images/ACF_Plot.png" width="600" height="400">
 </p>
 
-The PACF plot showed a dominant spike at lag 1, while most remaining lags were substantially smaller. This suggests that the strongest direct relationship exists between a month and its immediately preceding month and provides support for including an autoregressive component in the SARIMA specification.
+The PACF plot showed a dominant spike at lag 1, while most remaining lags were smaller. This suggests that the strongest direct relationship exists between a month and its immediately preceding month and provides support for including an autoregressive component in the SARIMA specification.
 
 <p align="center">
   <img src="images/PACF_Plot.png" width="600" height="400">
