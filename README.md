@@ -21,12 +21,14 @@
 | Item | Value |
 |--------|--------|
 | Forecast Horizon | Oct 2026 - Sep 2027 |
-| Dataset | Monthly Passenger Traffic (2019-2026) |
+| Dataset | Monthly Passenger Traffic (Jan 2019- Sep 2026) |
+| Airport | Athens International Airport (AIA) |
 | Models Evaluated | Holt-Winters, SARIMA |
-| Validation | Rolling-Origin Validation |
 | Benchmark | Seasonal Naive |
 | Final Holt-Winters Specification | Multiplicative Seasonality, No Trend |
-| Selected Training Window | 2019+ |
+| Final SARIMA Specification | SARIMA(1,1,0)(1,1,0,12) |
+| Forecast Training Data | Jan 2019 - Sep 2026 |
+
     
 In this project, we forecast passenger traffic at Athens International Airport using monthly data from 2019 onwards. Two forecasting methods are evaluated: **Holt-Winters Exponential Smoothing** and **Seasonal ARIMA (SARIMA)**.
 
