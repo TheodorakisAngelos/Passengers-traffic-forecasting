@@ -209,7 +209,15 @@ Before specifying a SARIMA model, the time series was examined using:
 
 The ACF plot showed strong positive autocorrelation at short lags, indicating that passenger traffic remains highly dependent on recent months. A clear spike was also visible at lag 12, showing that passenger volumes are strongly related to the same month of the previous year and confirming the presence of annual seasonality.
 
+<p align="center">
+  <img src="images/ACF_Plot.png" width="600" height="400">
+</p>
+
 The PACF plot showed a dominant spike at lag 1, while most remaining lags were substantially smaller. This suggests that the strongest direct relationship exists between a month and its immediately preceding month and provides support for including an autoregressive component in the SARIMA specification.
+
+<p align="center">
+  <img src="images/PACF_Plot.png.png" width="600" height="400">
+</p>
 
 The ADF test produced the following results:
 
@@ -327,6 +335,10 @@ The objective of residual diagnostics is simple:
 
 The residual autocorrelation plot showed no statistically significant spikes outside the confidence intervals.
 
+<p align="center">
+  <img src="images/SARIMA_Residual_Autocorrelation.png" width="600" height="400">
+</p>
+
 Unlike the Holt-Winters model, where autocorrelation remained visible in the residuals, the SARIMA residuals showed no meaningful patterns.
 
 This indicates that the model successfully captured the remaining temporal structure present in the passenger series.
@@ -337,7 +349,7 @@ The Ljung-Box test confirmed this result:
 |-------|-------|
 | 12 | 0.36 |
 
-Because the p-value is substantially greater than 0.05, the null hypothesis of independent residuals could not be rejected.
+Because the p-value is substantially greater than 0.05, the null hypothesis of independent residuals cannot be rejected.
 
 In other words, there is no statistical evidence that meaningful autocorrelation remains in the forecast errors.
 
@@ -366,6 +378,10 @@ The combination of lower forecasting error and the absence of significant residu
 ## Final SARIMA Forecast
 
 The final SARIMA(1,1,0)(1,1,0,12) model was fitted using all available historical observations and used to generate a twelve-month forecast covering October 2026 through September 2027.
+
+<p align="center">
+  <img src="images/SARIMA_pax_forecast.png" width="600" height="400">
+</p>
 
 The forecasts indicate continued growth in passenger traffic while maintaining the strong seasonal pattern observed throughout the historical data.
 
