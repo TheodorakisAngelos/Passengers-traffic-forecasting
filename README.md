@@ -160,7 +160,7 @@ By contrast, the seasonality-only model consistently outperformed the benchmark 
 | 2024+ | 21.41% | 52.26% |
 
 <p align="center">
-  <img src="images/Improvement_over_Seasonal_Naive_Benchmark.png" width="800">
+  <img src="images/Improvement_over_Seasonal_Naive_Benchmark.png" width="700" height ="500">
 </p>
 
 
@@ -216,7 +216,7 @@ The ACF plot showed strong positive autocorrelation at short lags, indicating th
 The PACF plot showed a dominant spike at lag 1, while most remaining lags were substantially smaller. This suggests that the strongest direct relationship exists between a month and its immediately preceding month and provides support for including an autoregressive component in the SARIMA specification.
 
 <p align="center">
-  <img src="images/PACF_Plot.png.png" width="600" height="400">
+  <img src="images/PACF_Plot.png" width="600" height="400">
 </p>
 
 The ADF test produced the following results:
@@ -380,7 +380,7 @@ The combination of lower forecasting error and the absence of significant residu
 The final SARIMA(1,1,0)(1,1,0,12) model was fitted using all available historical observations and used to generate a twelve-month forecast covering October 2026 through September 2027.
 
 <p align="center">
-  <img src="images/SARIMA_pax_forecast.png" width="600" height="400">
+  <img src="images/SARIMA_pax_forecast.png" width="800" height="800">
 </p>
 
 The forecasts indicate continued growth in passenger traffic while maintaining the strong seasonal pattern observed throughout the historical data.
