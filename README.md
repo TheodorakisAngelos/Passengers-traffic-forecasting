@@ -237,10 +237,9 @@ The ADF test produced the following results:
 | ADF Statistic | -1.998 |
 | p-value | 0.287 |
 
-Because the p-value exceeded 0.05, the null hypothesis of non-stationarity could not be rejected. This suggests that the passenger series was non-stationary and therefore required differencing before applying SARIMA.
+Because the p-value exceeded 0.05, the null hypothesis of non-stationarity could not be rejected. This suggests that the passenger series is non-stationary and therefore requires differencing before applying SARIMA.
 
-The ADF result therefore supported the use of first-order differencing (**d = 1**) in the candidate models.
-
+The ADF test indicated that the series was non-stationary. To address this issue, first-order differencing (d = 1) was incorporated into the SARIMA candidate models evaluated later in the analysis.
 ---
 
 ## Train-Test Validation
@@ -262,9 +261,7 @@ Using the same validation period allows a direct comparison between Holt-Winters
 
 SARIMA combines several components that capture different characteristics of a time series.
 
-The notation is:
-
-**SARIMA(p,d,q)(P,D,Q,12)**
+The notation is: **SARIMA (p,d,q) (P,D,Q,12)**
 
 where:
 
@@ -289,7 +286,7 @@ Several candidate SARIMA models were therefore evaluated:
 - SARIMA(0,1,1)(0,0,1,12)
 - SARIMA(1,1,1)(1,0,1,12)
 
-Most candidate specifications focused on autoregressive terms because the PACF suggested that previous passenger volumes contain useful predictive information. One alternative specification using moving-average terms was also included to test whether modelling previous forecast errors could improve forecasting performance.
+Most candidate specifications focused on autoregressive terms because the PACF suggested that previous passenger volumes contain useful predictive information. Candidate models incorporating moving-average terms were also evaluated to determine whether modelling past forecast errors could further improve forecast accuracy.
 
 The final model was selected based on out-of-sample forecasting accuracy using the 2025 test period.
 
@@ -306,9 +303,9 @@ The final model was selected based on out-of-sample forecasting accuracy using t
 
 The best-performing specification was:
 
-**SARIMA(1,1,0)(1,1,0,12)**
+**SARIMA (1,1,0) (1,1,0,12)**
 
-This model achieved the lowest forecasting error among all candidate specifications, with a Mean Absolute Percentage Error (MAPE) of **3.40%** on the 2025 test period.
+This model achieved the lowest forecasting error among all candidate specifications, with a Mean Absolute Percentage Error (MAPE) of 3.40% on the 2025 test period. As a result, it was selected as the final SARIMA model.
 
 ---
 
@@ -316,16 +313,16 @@ This model achieved the lowest forecasting error among all candidate specificati
 
 The selected model contains:
 
-- One non-seasonal autoregressive term.
-- One non-seasonal difference to remove long-term non-stationarity.
-- One seasonal autoregressive term to capture annual passenger patterns.
-- One seasonal difference to stabilise recurring yearly behaviour.
+- AR(1): One non-seasonal autoregressive term, meaning that passenger traffic is influenced by the previous month's passenger volume.
+- d = 1: First-order differencing removes longer-term non-stationarity by modelling month-to-month changes.
+- SAR(1): One seasonal autoregressive term, meaning that passenger traffic is influenced by passenger volumes observed during the same month one year earlier.
+- D = 1: Seasonal differencing removes recurring annual patterns by modelling year-over-year changes.
 
-In practical terms, this means that passenger traffic is influenced both by recent months and by recurring seasonal patterns observed one year earlier.
+In practical terms, the model assumes that passenger traffic depends both on recent monthly activity and on seasonal patterns observed during the same period in previous years.
 
-### Parameter Significance
+### Estimated Parameters
 
-The fitted model produced the following significant parameters:
+After fitting the selected SARIMA(1,1,0)(1,1,0,12) model to the training data, the following parameter estimates were obtained:
 
 | Parameter | Estimate | p-value |
 |-----------|-----------|-----------|
@@ -376,42 +373,63 @@ SARIMA goes one step further by explicitly modelling autocorrelation, meaning th
 
 While passenger traffic itself showed significant autocorrelation, the important question is whether that autocorrelation remains after fitting a forecasting model.
 
-For Holt-Winters, residual diagnostics indicated that some autocorrelation remained unexplained.
+For Holt-Winters, residual diagnostics indicated that some autocorrelation remained unexplained. For SARIMA, the residual autocorrelation largely disappeared.
 
-For SARIMA, the residual autocorrelation largely disappeared.
+This suggests that SARIMA was able to capture patterns that Holt-Winters left unmodelled, resulting in more accurate forecasts.
 
-This suggests that SARIMA was able to capture patterns that Holt-Winters left unmodelled, resulting in more accurate forecasts and statistically cleaner residuals.
+### Forecast Accuracy Comparison (2025 Test Period)
 
-The combination of lower forecasting error and the absence of significant residual autocorrelation indicates that SARIMA provided a more complete representation of the underlying passenger traffic dynamics.
+| Model | MAPE |
+|---------|---------:|
+| Seasonal Naive | 6.84% |
+| Holt-Winters | 4.96% |
+| SARIMA(1,1,0)(1,1,0,12) | 3.40% |
+
+SARIMA achieved the lowest forecasting error on the 2025 test period, reducing MAPE by approximately 31% relative to Holt-Winters and by 50% relative to the Seasonal Naive benchmark.
+
+The combination of lower forecasting error and the absence of significant residual autocorrelation indicates that SARIMA was better able to explain the historical passenger traffic patterns, resulting in more accurate forecasts.
 
 ---
 
 ## Final SARIMA Forecast
 
-The final SARIMA(1,1,0)(1,1,0,12) model was fitted using all available historical observations and used to generate a twelve-month forecast covering October 2026 through September 2027.
+The final SARIMA(1,1,0)(1,1,0,12) model was fitted using all available historical observations and used to generate a 12-month forecast covering October 2026 through September 2027.
 
 <p align="center">
   <img src="images/SARIMA_pax_forecast.png" width="1000" height="1000">
 </p>
 
-The forecasts indicate continued growth in passenger traffic while maintaining the strong seasonal pattern observed throughout the historical data.
+### 12-Month Passenger Forecast
 
-Summer months remain the busiest period, with August forecast to exceed 4.1 million passengers.
+| Month | Forecast Passengers |
+|---------|------------------:|
+| Oct 2026 | 3.25 M |
+| Nov 2026 | 2.44 M |
+| Dec 2026 | 2.39 M |
+| Jan 2027 | 2.08 M |
+| Feb 2027 | 2.05 M |
+| Mar 2027 | 2.42 M |
+| Apr 2027 | 2.86 M |
+| May 2027 | 3.32 M |
+| Jun 2027 | 3.63 M |
+| Jul 2027 | 4.01 M |
+| Aug 2027 | 4.12 M |
+| Sep 2027 | 3.70 M |
 
-Year-over-year growth is expected to moderate compared with the strong post-COVID recovery period, with most months showing growth of approximately 2% to 5% relative to the previous year.
+The resulting forecast reflects a transition from the rapid post-COVID recovery period towards a more stable growth trajectory while preserving the well-established seasonal behaviour of Athens International Airport passenger traffic.
 
-The resulting forecast therefore reflects a transition from rapid recovery towards a more stable growth trajectory while preserving the well-established seasonal behaviour of Athens International Airport passenger traffic.
+Passenger volumes are expected to increase by approximately 2% to 5% year-over-year across most forecast months, with August 2027 projected to exceed 4.1 million passengers.
 
 From a modelling perspective, the absence of significant residual autocorrelation suggests that the final SARIMA specification successfully captured the main predictable patterns present in the historical passenger series.
 
-
+Future actual passenger traffic data will provide an opportunity to evaluate how well these forecasts perform in practice and to compare forecasted values against realised airport demand.
 
 ## Key Conclusions
 
 - Strong seasonality is the dominant characteristic of passenger traffic.
-- The trend component reduced forecasting performance in most validation windows.
+- Including a trend component reduced forecasting performance in most validation windows.
 - The seasonality-only Holt-Winters model consistently outperformed the Seasonal Naive benchmark.
-- Residual diagnostics revealed statistically significant autocorrelation that remained unexplained by Holt-Winters.
-- SARIMA(1,1,0)(1,1,0,12) achieved the lowest forecasting error (MAPE = 3.40%) on the 2025 test period.
-- The final SARIMA model successfully removed the residual autocorrelation observed in Holt-Winters, indicating that it captured the remaining predictable structure in the series.
+- Residual diagnostics revealed unexplained autocorrelation in the Holt-Winters forecast errors, suggesting that some temporal dependencies remained unmodelled.
+- SARIMA(1,1,0)(1,1,0,12) achieved the lowest forecasting error, with a MAPE of 3.40% on the 2025 test period.
+- Residual diagnostics indicated that the final SARIMA model successfully captured the remaining predictable structure in the series.
 - Forecasts suggest continued passenger growth through September 2027 while preserving the strong seasonal patterns historically observed at Athens International Airport.
