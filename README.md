@@ -46,8 +46,7 @@ In this project, we forecast passenger traffic at Athens International Airport u
 
 The forecasting horizon covers the period from October 2026 through September 2027. This short forecasting window is chosen because longer-term passenger forecasts typically require additional information such as GDP growth, tourism demand, airline capacity and route development plans. For a one-year horizon, however, time series models such as Holt-Winters and SARIMA can provide reliable forecasts using only historical passenger traffic data.
 
-As with all statistical forecasting models, unexpected external events such as the COVID-19 pandemic cannot be predicted. Because the historical data include this highly volatile period, the resulting confidence intervals are unusually wide. As a result, the analysis focuses primarily on point forecasts while acknowledging the uncertainty associated with future passenger demand.
-
+The historical data include an unusually volatile period covering both the COVID-19 disruption and the recovery that followed. For this reason, forecast uncertainty is higher than would typically be expected, and the analysis focuses primarily on the central forecast while acknowledging the uncertainty associated with future passenger demand.
 
 ## Exploratory Analysis
 We begin by visualizing the available monthly passenger traffic data. 
