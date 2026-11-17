@@ -12,10 +12,10 @@
   - [Trend Component Evaluation](#trend-component-evaluation)
   - [Evaluating Improvement Against the Baseline](#evaluating-improvement-against-the-baseline)
   - [HW Model Diagnostics](#hw-model-diagnostics)
-  - [Final Holt-Winters Model](#final-holt-winters-model)
+  - [Final Holt-Winters Forecast](#final-holt-winters-forecast)
+  - [Why SARIMA Was Considered](#why-sarima-was-considered)
 
 - [SARIMA Model](#sarima-model)
-  - [Why SARIMA Was Considered](#why-sarima-was-considered)
   - [SARIMA Identification](#sarima-identification)
   - [Train-Test Validation](#train-test-validation)
   - [Candidate Model Selection](#candidate-model-selection)
