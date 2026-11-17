@@ -54,7 +54,7 @@ We begin by visualizing the available monthly passenger traffic data.
 
 #### <h3 align="center">Historical AIA Passenger Traffic</h3>
 <p align="center">
-  <img src="images/AIA_Monthly_Passengers.png" width="1400" height="1500">
+  <img src="images/AIA_Monthly_Passengers.png" width="2000" height="1600">
 </p>
 
 Several key patterns emerge:
