@@ -85,7 +85,7 @@ The selected SARIMA(1,1,0)(1,1,0,12) model was fitted using all available histor
 
 Passenger traffic is expected to retain its strong seasonal pattern, with volumes peaking during the summer of 2027. August 2027 is forecast to exceed 4.1 million passengers, while year-over-year growth is estimated at approximately 2%–5% across most forecast months.
 
-### Forecast Comparison (Oct 2026 - Sep 2027)
+### Forecast Comparison: SARIMA vs Holt-Winters
 
 | Month | SARIMA Forecast | Holt-Winters Forecast |
 |---------|---------------:|---------------------:|
