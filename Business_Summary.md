@@ -19,7 +19,7 @@
 
 The objective of this project is to forecast monthly passenger traffic at Athens International Airport (AIA) for the period October 2026 to September 2027, using historical monthly data from January 2019 to September 2026.
 
-Accurate passenger traffic forecasts can support airport capacity planning, resource allocation and operational decision-making.
+Passenger traffic forecasts support airport capacity planning, resource allocation, staffing decisions and operational planning.
 
 ## Exploratory Analysis
 We begin by visualizing the available monthly passenger traffic data. 
@@ -29,7 +29,10 @@ We begin by visualizing the available monthly passenger traffic data.
   <img src="images/AIA_Monthly_Passengers.png" width="2000" height="1600">
 </p>
 
-Several key patterns emerge like strong seasonality, passenger traffic follows an overall upward trend, Demand is lower during the winter months and peaks during the summer tourist season.
+Several key patterns emerge from the data:
+- Strong seasonality is present throughout the series.
+- Passenger traffic follows an overall upward trend.
+- Demand is lower during the winter months and peaks during the summer tourist season.
 
 These observations are consistent with the seasonality expected from the tourism-driven market of Greece.
 
@@ -51,24 +54,14 @@ The final forecasting model therefore retained a multiplicative seasonal structu
 </p>
 
 ## Why SARIMA Was Considered
-We observed that the final Holt-Winters model delivered stable forecasts and consistently outperformed the Seasonal Naive benchmark. However, residual diagnostics revealed autocorrelation in the forecast errors. The residual ACF plot showed a strong positive correlation at lag 1,as we see in the following graph, while the Ljung-Box test indicated statistically significant residual autocorrelation (p-value < 0.05).
 
+Although the final Holt-Winters model outperformed the Seasonal Naive benchmark, residual diagnostics indicated that some autocorrelation remained unexplained. This suggested that additional predictive information was still present in the data.
 
-These findings indicate that the residuals were not completely random and still contained autocorrelation. In other words, some information remained unexplained by the Holt-Winters model.
-
-This provided our motivation to evaluate SARIMA. Unlike Holt-Winters, SARIMA explicitly models autocorrelation in the time series by incorporating relationships between current and past observations. As a result, it may be able to capture patterns that remained unexplained by the Holt-Winters model and improve forecasting accuracy.
-
-## Key Findings
-
-The analysis confirmed that passenger traffic at AIA is strongly seasonal, with demand typically peaking during the summer months and reaching its lowest levels during winter.
-
-The evaluation also showed that adding a trend component to the Holt-Winters model did not consistently improve forecasting accuracy. A seasonality-only specification produced more stable results and consistently outperformed the Seasonal Naive benchmark across the evaluated training windows.
-
-The final SARIMA model achieved the best forecasting performance on the 2025 test period:
+To address this limitation, several SARIMA specifications were evaluated, as SARIMA is specifically designed to model relationships between current and past observations.
 
 ---
 
-### Forecast Accuracy Comparison (2025 Test Period)
+### Model Comparison (2025 Test Period)
 
 | Model | MAPE |
 |---------|---------:|
@@ -122,5 +115,5 @@ Future actual passenger traffic data will provide an opportunity to evaluate how
 - The seasonality-only Holt-Winters model consistently outperformed the Seasonal Naive benchmark.
 - Residual diagnostics revealed unexplained autocorrelation in the Holt-Winters forecast errors, suggesting that some temporal dependencies remained unmodelled.
 - SARIMA(1,1,0)(1,1,0,12) achieved the lowest forecasting error, with a MAPE of 3.40% on the 2025 test period.
-- Residual diagnostics indicated that the final SARIMA model successfully captured the remaining predictable structure in the series.
+- Residual diagnostics indicated that the final SARIMA model successfully captured the remaining patterns present in the historical passenger traffic data.
 - Forecasts suggest continued passenger growth through September 2027 while preserving the strong seasonal patterns historically observed at Athens International Airport.
