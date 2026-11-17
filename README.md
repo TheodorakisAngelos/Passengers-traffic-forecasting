@@ -260,6 +260,7 @@ The ADF test indicated that the series was non-stationary. To address this issue
 In addition to non-seasonal differencing, the strong annual seasonality observed in the ACF plot suggested that seasonal differencing could also be beneficial. Applying one seasonal difference (D = 1) removes recurring year-over-year patterns by comparing each month with the corresponding month of the previous year.
 
 For this reason, candidate models both with and without seasonal differencing were evaluated, allowing the final specification to be selected based on out-of-sample forecasting performance.
+
 ---
 
 ## Train-Test Validation
