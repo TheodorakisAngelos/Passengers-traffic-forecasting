@@ -213,10 +213,10 @@ The resulting forecast preserves the strong seasonal behaviour observed througho
 | Aug 2027 | 4.04 M |
 | Sep 2027 | 3.58 M |
 
-# SARIMA Model
 ## Why SARIMA Was Considered
-We observed that the final Holt-Winters model delivered stable forecasts and consistently outperformed the Seasonal Naive benchmark. However, residual diagnostics revealed autocorrelation in the forecast errors. The residual ACF plot showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
+We observed that the final Holt-Winters model delivered stable forecasts and consistently outperformed the Seasonal Naive benchmark. However, residual diagnostics revealed autocorrelation in the forecast errors. The residual ACF plot showed a strong positive correlation at lag 1, while the Ljung-Box test indicated statistically significant residual autocorrelation (p < 0.05).
 
+### Holt-Winters residual ACF plot
 <p align="center">
   <img src="images/Residual_Autocorrelation_HW.png" width="600" height="400">
 </p>
@@ -225,7 +225,7 @@ These findings indicate that the residuals were not completely random and still 
 
 This provided our motivation to evaluate SARIMA. Unlike Holt-Winters, SARIMA explicitly models autocorrelation in the time series by incorporating relationships between current and past observations. As a result, it may be able to capture patterns that remained unexplained by the Holt-Winters model and improve forecasting accuracy.
 
-
+# SARIMA Model
 ## SARIMA Identification
 
 Before specifying a SARIMA model, we examined our time series using the following:
