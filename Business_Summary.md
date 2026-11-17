@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-### Project Summary
+## Key Project Information
 
 | Item | Value |
 |--------|--------|
