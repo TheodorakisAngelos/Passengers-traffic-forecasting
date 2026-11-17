@@ -440,7 +440,7 @@ Passenger volumes are expected to increase by approximately 2% to 5% year-over-y
 
 From a modelling perspective, the absence of significant residual autocorrelation suggests that the final SARIMA specification successfully captured the main predictable patterns present in the historical passenger series.
 
-### Forecast Comparison (Oct 2026 - Sep 2027)
+### Forecast Comparison: SARIMA vs Holt-Winters
 
 | Month | SARIMA Forecast | Holt-Winters Forecast |
 |---------|---------------:|---------------------:|
