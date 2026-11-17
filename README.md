@@ -199,7 +199,7 @@ The resulting forecast preserves the strong seasonal behaviour observed througho
 
 # SARIMA Model
 ## Why SARIMA Was Considered
-We observed that that the final Holt-Winters model delivered stable forecasts and consistently outperformed the Seasonal Naive benchmark. However, residual diagnostics revealed autocorrelation in the forecast errors. The residual ACF plot showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
+We observed that the final Holt-Winters model delivered stable forecasts and consistently outperformed the Seasonal Naive benchmark. However, residual diagnostics revealed autocorrelation in the forecast errors. The residual ACF plot showed a strong positive correlation at lag 1, while the Ljung-Box test rejected the assumption of independent residuals (p < 0.05).
 
 <p align="center">
   <img src="images/Residual_Autocorrelation_HW.png" width="600" height="400">
@@ -357,11 +357,11 @@ The Ljung-Box test confirmed this result:
 |-------|-------|
 | 12 | 0.36 |
 
-Because the p-value is substantially greater than 0.05, the null hypothesis of independent residuals cannot be rejected.
+Because the p-value is substantially greater than 0.05, there is no statistical evidence of significant residual autocorrelation.
 
-In other words, there is no statistical evidence that meaningful autocorrelation remains in the forecast errors.
+This result supports the visual evidence from the residual ACF plot and suggests that the model successfully captured the remaining temporal structure in the series.
 
-This is an important result because it suggests that the SARIMA model successfully extracted most of the predictable information contained in the historical passenger data.
+As a result, the residuals behave largely as random noise, indicating that most of the information in the data has been captured by the model.
 
 ---
 
@@ -396,7 +396,7 @@ The combination of lower forecasting error and the absence of significant residu
 The final SARIMA(1,1,0)(1,1,0,12) model was fitted using all available historical observations and used to generate a 12-month forecast covering October 2026 through September 2027.
 
 <p align="center">
-  <img src="images/SARIMA_pax_forecast.png" width="1000" height="1000">
+  <img src="images/SARIMA_pax_forecast_with_CI.png" width="1000" height="1000">
 </p>
 
 ### 12-Month Passenger Forecast
