@@ -1,31 +1,6 @@
-# Passenger Traffic Forecasting for Athens International Airport
+<img width="4032" height="1178" alt="image" src="https://github.com/user-attachments/assets/bd31f833-01ae-44d3-a952-97ce5bb4750f" /># Passenger Traffic Forecasting for Athens International Airport
 
 ## Contents
-
-- [Project Summary](#project-summary)
-- [Exploratory Analysis](#exploratory-analysis)
-- [Establishing a Baseline Forecast](#establishing-a-baseline-forecast)
-
-- [Holt-Winters Model](#holt-winters-model)
-  - [Initial Model Specification](#initial-model-specification)
-  - [Validation Framework](#validation-framework)
-  - [Trend Component Evaluation](#trend-component-evaluation)
-  - [Evaluating Improvement Against the Baseline](#evaluating-improvement-against-the-baseline)
-  - [HW Model Diagnostics](#hw-model-diagnostics)
-  - [Final Holt-Winters Forecast](#final-holt-winters-forecast)
-  - [Why SARIMA Was Considered](#why-sarima-was-considered)
-
-- [SARIMA Model](#sarima-model)
-  - [SARIMA Identification](#sarima-identification)
-  - [Train-Test Validation](#train-test-validation)
-  - [Candidate Model Selection](#candidate-model-selection)
-  - [Model Comparison](#model-comparison)
-  - [Model Interpretation](#model-interpretation)
-  - [Residual Diagnostics](#residual-diagnostics)
-  - [Why SARIMA Improved on Holt-Winters](#why-sarima-improved-on-holt-winters)
-  - [Final SARIMA Forecast](#final-sarima-forecast)
-
-- [Key Conclusions](#key-conclusions)
 
 
 ## Project Summary
@@ -186,37 +161,19 @@ In practical terms, the model assumes that passenger traffic depends both on rec
 
 ## Residual Diagnostics
 
-After fitting the selected SARIMA model, residual behaviour was examined.
+## Residual Diagnostics
 
-The residual autocorrelation plot showed no statistically significant spikes outside the confidence intervals.
+Residual diagnostics showed that the final SARIMA model successfully captured the remaining patterns in passenger traffic data.
+
+Unlike the Holt-Winters model, which exhibited residual autocorrelation, the SARIMA residuals behaved largely as random noise and showed no evidence of significant autocorrelation.
 
 <p align="center">
   <img src="images/SARIMA_Residual_Autocorrelation.png" width="600" height="400">
 </p>
 
-Unlike the Holt-Winters model, where autocorrelation remained visible in the residuals, the SARIMA residuals showed no meaningful patterns.
-
-This indicates that the model successfully captured the remaining temporal structure present in the passenger series.
-
-The Ljung-Box test confirmed this result. Because the p-value is substantially greater than 0.05, there is no statistical evidence of significant residual autocorrelation.
-
-This result supports the visual evidence from the residual ACF plot and suggests that the model successfully captured the remaining temporal structure in the series.
-
-As a result, the residuals behave largely as random noise, indicating that most of the information in the data has been captured by the model.
+These results indicate that the model successfully captured the main structure of the time series and left little predictable information unexplained.
 
 ---
-
-## Why SARIMA Improved on Holt-Winters
-
-The Holt-Winters model focuses primarily on estimating level, trend and seasonal patterns.
-
-SARIMA goes one step further by explicitly modelling autocorrelation, meaning that it captures how current passenger volumes depend on previous observations.
-
-While passenger traffic itself showed significant autocorrelation, the important question is whether that autocorrelation remains after fitting a forecasting model.
-
-For Holt-Winters, residual diagnostics indicated that some autocorrelation remained unexplained. For SARIMA, the residual autocorrelation largely disappeared.
-
-This suggests that SARIMA was able to capture patterns that Holt-Winters left unmodelled, resulting in more accurate forecasts.
 
 ### Forecast Accuracy Comparison (2025 Test Period)
 
@@ -240,26 +197,9 @@ The final SARIMA(1,1,0)(1,1,0,12) model was fitted using all available historica
   <img src="images/SARIMA_pax_forecast_with_CI.png" width="1000" height="1000">
 </p>
 
-### 12-Month SARIMA Passenger Forecast
-
-| Month | Forecast Passengers |
-|---------|------------------:|
-| Oct 2026 | 3.25 M |
-| Nov 2026 | 2.44 M |
-| Dec 2026 | 2.39 M |
-| Jan 2027 | 2.08 M |
-| Feb 2027 | 2.05 M |
-| Mar 2027 | 2.42 M |
-| Apr 2027 | 2.86 M |
-| May 2027 | 3.32 M |
-| Jun 2027 | 3.63 M |
-| Jul 2027 | 4.01 M |
-| Aug 2027 | 4.12 M |
-| Sep 2027 | 3.70 M |
-
-As with all statistical forecasting models, unexpected external events such as the COVID-19 pandemic cannot be predicted. Because the historical data include this highly volatile period, the resulting confidence intervals are unusually wide. As a result, the analysis focuses primarily on point forecasts while acknowledging the uncertainty associated with future passenger demand.
-
 The resulting forecast reflects a transition from the rapid post-COVID recovery period towards a more stable growth trajectory while preserving the well-established seasonal behaviour of Athens International Airport passenger traffic.
+
+As with all statistical forecasting models, unexpected external events such as the COVID-19 pandemic cannot be predicted. Because the historical data include this highly volatile period, the resulting confidence intervals are unusually wide. 
 
 Passenger volumes are expected to increase by approximately 2% to 5% year-over-year across most forecast months, with August 2027 projected to exceed 4.1 million passengers.
 
