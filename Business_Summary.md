@@ -4,7 +4,6 @@
 
 ## Key Project Information
 
-|  |  |
 |--------|--------|
 | Forecast Horizon | Oct 2026 - Sep 2027 |
 | Dataset | Monthly Passenger Traffic (Jan 2019- Sep 2026) |
