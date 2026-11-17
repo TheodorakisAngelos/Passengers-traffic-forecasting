@@ -98,16 +98,6 @@ In several validation periods, the trend model produced less accurate forecasts 
 
 By contrast, the seasonality-only model consistently outperformed the benchmark across all training windows.
 
-### Improvement vs Baseline
-| Start Year | Trend + Seasonal | Seasonal Only |
-|------------|----------------:|--------------:|
-| 2019+ | -76.27% | 48.63% |
-| 2020+ | 18.27% | 3.91% |
-| 2021+ | -176.95% | 15.53% |
-| 2022+ | -8.33% | 37.90% |
-| 2023+ | -11.34% | 47.56% |
-| 2024+ | 21.41% | 52.26% |
-
 <p align="center">
   <img src="images/Improvement_over_Seasonal_Naive_Benchmark.png" width="700" height ="500">
 </p>
