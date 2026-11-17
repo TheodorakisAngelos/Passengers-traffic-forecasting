@@ -196,6 +196,22 @@ The resulting forecast preserves the strong seasonal behaviour observed througho
   <img src="images/HW_forecast_using_best_window_(2019+)_no_trend.png" width="1000" height="1000">
 </p>
 
+### 12-Month Holt-Winters Passenger Forecast
+
+| Month | Forecast Passengers |
+|---------|------------------:|
+| Oct 2026 | 3.26 M |
+| Nov 2026 | 2.43 M |
+| Dec 2026 | 2.37 M |
+| Jan 2027 | 2.03 M |
+| Feb 2027 | 1.99 M |
+| Mar 2027 | 2.33 M |
+| Apr 2027 | 2.79 M |
+| May 2027 | 3.27 M |
+| Jun 2027 | 3.58 M |
+| Jul 2027 | 3.96 M |
+| Aug 2027 | 4.04 M |
+| Sep 2027 | 3.58 M |
 
 # SARIMA Model
 ## Why SARIMA Was Considered
@@ -240,6 +256,10 @@ The ADF test produced the following results:
 Because the p-value exceeded 0.05, the null hypothesis of non-stationarity could not be rejected. This suggests that the passenger series is non-stationary and therefore requires differencing before applying SARIMA.
 
 The ADF test indicated that the series was non-stationary. To address this issue, first-order differencing (d = 1) was incorporated into the SARIMA candidate models evaluated later in the analysis.
+
+In addition to non-seasonal differencing, the strong annual seasonality observed in the ACF plot suggested that seasonal differencing could also be beneficial. Applying one seasonal difference (D = 1) removes recurring year-over-year patterns by comparing each month with the corresponding month of the previous year.
+
+For this reason, candidate models both with and without seasonal differencing were evaluated, allowing the final specification to be selected based on out-of-sample forecasting performance.
 ---
 
 ## Train-Test Validation
@@ -399,7 +419,7 @@ The final SARIMA(1,1,0)(1,1,0,12) model was fitted using all available historica
   <img src="images/SARIMA_pax_forecast_with_CI.png" width="1000" height="1000">
 </p>
 
-### 12-Month Passenger Forecast
+### 12-Month SARIMA Passenger Forecast
 
 | Month | Forecast Passengers |
 |---------|------------------:|
@@ -421,6 +441,27 @@ The resulting forecast reflects a transition from the rapid post-COVID recovery 
 Passenger volumes are expected to increase by approximately 2% to 5% year-over-year across most forecast months, with August 2027 projected to exceed 4.1 million passengers.
 
 From a modelling perspective, the absence of significant residual autocorrelation suggests that the final SARIMA specification successfully captured the main predictable patterns present in the historical passenger series.
+
+### Forecast Comparison (Oct 2026 - Sep 2027)
+
+| Month | SARIMA Forecast | Holt-Winters Forecast |
+|---------|---------------:|---------------------:|
+| Oct 2026 | 3,253,803 | 3,261,800 |
+| Nov 2026 | 2,438,702 | 2,430,990 |
+| Dec 2026 | 2,394,066 | 2,372,065 |
+| Jan 2027 | 2,082,173 | 2,034,746 |
+| Feb 2027 | 2,048,996 | 1,987,963 |
+| Mar 2027 | 2,417,049 | 2,328,518 |
+| Apr 2027 | 2,864,255 | 2,787,266 |
+| May 2027 | 3,317,210 | 3,267,870 |
+| Jun 2027 | 3,631,584 | 3,575,043 |
+| Jul 2027 | 4,014,003 | 3,964,339 |
+| Aug 2027 | 4,119,251 | 4,037,069 |
+| Sep 2027 | 3,698,420 | 3,581,466 |
+
+Although both models produce very similar forecasts, SARIMA consistently projected slightly higher passenger volumes and achieved superior out-of-sample forecasting accuracy during model validation (MAPE: 3.40% vs 4.96%).
+
+For this reason, the SARIMA forecasts were retained as the final forecast for the October 2026 to September 2027 planning horizon.
 
 Future actual passenger traffic data will provide an opportunity to evaluate how well these forecasts perform in practice and to compare forecasted values against realised airport demand.
 
