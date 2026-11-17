@@ -61,7 +61,7 @@ To address this limitation, several SARIMA specifications were evaluated, as SAR
 
 ---
 
-### Model Comparison (2025 Test Period)
+### Model Comparison
 
 | Model | MAPE |
 |---------|---------:|
