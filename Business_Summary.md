@@ -1,8 +1,8 @@
-# Passenger Traffic Forecasting for Athens International Airport - Business Summary
+# Athens International Airport Passenger Traffic Forecasting
 
+## Executive Summary
 
-
-## Project Summary
+### Project Summary
 
 | Item | Value |
 |--------|--------|
