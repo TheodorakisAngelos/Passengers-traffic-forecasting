@@ -158,7 +158,7 @@ The results indicate that the benefit of including a trend component is inconsis
 ## Evaluating Improvement Against the Baseline
 After comparing the two Holt-Winters specifications, the next step is to evaluate whether they provide any improvement over the Seasonal Naive benchmark.
 
-The trend model delivered inconsistent results. In most cases, it failed to outperform the Seasonal Naive benchmark and sometimes produced less accurate forecasts than simply using last year's passenger traffic. 
+In several validation periods, the trend model produced less accurate forecasts than the Seasonal Naive benchmark.
 
 By contrast, the seasonality-only model consistently outperformed the benchmark across all training windows.
 
