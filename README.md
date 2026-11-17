@@ -461,7 +461,7 @@ From a modelling perspective, the absence of significant residual autocorrelatio
 
 Although both models produce very similar forecasts, SARIMA consistently projected slightly higher passenger volumes and achieved superior out-of-sample forecasting accuracy during model validation (MAPE: 3.40% vs 4.96%).
 
-For this reason, the SARIMA forecasts were retained as the final forecast for the October 2026 to September 2027 planning horizon.
+For this reason, the SARIMA forecasts were retained as the final forecast for the October 2026 to September 2027 horizon.
 
 Future actual passenger traffic data will provide an opportunity to evaluate how well these forecasts perform in practice and to compare forecasted values against realised airport demand.
 
