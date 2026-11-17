@@ -187,7 +187,7 @@ The best result for the trend-enhanced model was obtained using the 2020+ traini
 
 For this reason, the trend component was removed from the final specification. The results showed that, for a 12-month forecasting horizon, passenger traffic at Athens International Airport is better explained by strong seasonal patterns than by extending recent growth trends into the future.
 
-## Final Holt-Winters Model
+## Final Holt-Winters Forecast
 The final forecasting model therefore retained a multiplicative seasonal structure without a trend component, as this specification delivered more stable forecasts, lower validation errors, and substantially stronger improvements over the Seasonal Naive benchmark across multiple out-of-sample periods.
 
 The resulting forecast preserves the strong seasonal behaviour observed throughout the historical data. Passenger traffic is expected to peak during the summer months and remain lower during the winter season, consistent with historical travel patterns at Athens International Airport.
