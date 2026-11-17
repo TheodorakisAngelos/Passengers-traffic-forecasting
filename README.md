@@ -215,7 +215,7 @@ This provided our motivation to evaluate SARIMA. Unlike Holt-Winters, SARIMA exp
 Before specifying a SARIMA model, we examined our time series using the following:
 
 - **Autocorrelation Function (ACF)** to identify relationships between current passenger volumes and previous months.
-- **Partial Autocorrelation Function (PACF)** to identify the direct influence of individual lags after accounting for intermediate periods.
+- **Partial Autocorrelation Function (PACF)** to identify the specific previous months that directly influence current passenger volumes, without the indirect effects of other periods.
 - **Augmented Dickey-Fuller (ADF) Test** to assess stationarity.
 
 The ACF plot showed strong positive autocorrelation at short lags, indicating that passenger traffic remains highly dependent on recent months. A clear spike was also visible at lag 12, showing that passenger volumes are strongly related to the same month of the previous year and confirming the presence of annual seasonality.
@@ -224,7 +224,7 @@ The ACF plot showed strong positive autocorrelation at short lags, indicating th
   <img src="images/ACF_Plot.png" width="600" height="400">
 </p>
 
-The PACF plot showed a dominant spike at lag 1, while most remaining lags were smaller. This suggests that the strongest direct relationship exists between a month and its immediately preceding month and provides support for including an autoregressive component in the SARIMA specification.
+The PACF plot showed a dominant spike at lag 1, while most remaining lags were smaller. This suggests that the strongest direct relationship exists between a month and its immediately preceding month and suggests the inclusion of an autoregressive component in the SARIMA models evaluated later in the analysis.
 
 <p align="center">
   <img src="images/PACF_Plot.png" width="600" height="400">
