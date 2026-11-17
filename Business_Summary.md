@@ -1,7 +1,6 @@
-<img width="4032" height="1178" alt="image" src="https://github.com/user-attachments/assets/bd31f833-01ae-44d3-a952-97ce5bb4750f" /># Passenger Traffic Forecasting for Athens International Airport
+# Passenger Traffic Forecasting for Athens International Airport - Business Summary
 
 ## Contents
-
 
 ## Project Summary
 
@@ -16,7 +15,7 @@
 | Final SARIMA Specification | SARIMA(1,1,0)(1,1,0,12) |
 | Forecast Training Data | Jan 2019 - Sep 2026 |
 
-    
+
 In this project, we forecast passenger traffic at Athens International Airport using monthly data from 2019 onwards. Two forecasting methods are evaluated: **Holt-Winters Exponential Smoothing** and **Seasonal ARIMA (SARIMA)**.
 
 The forecasting horizon covers the period from October 2026 through September 2027. 
@@ -30,6 +29,7 @@ We begin by visualizing the available monthly passenger traffic data.
 </p>
 
 Several key patterns emerge like strong seasonality, passenger traffic follows an overall upward trend, Demand is lower during the winter months and peaks during the summer tourist season.
+
 These observations are consistent with the seasonality expected from the tourism-driven market of Greece.
 
 ## Establishing a Baseline Forecast
@@ -39,13 +39,15 @@ The purpose of this benchmark is to decide whether more advanced forecasting met
 
 To evaluate performance, baseline forecasts are compared with actual passenger traffic over the test periods. Forecast accuracy is measured using the Mean Absolute Percentage Error (MAPE). This baseline MAPE serves as the benchmark against which all subsequent models are evaluated.
 
-
 # Holt-Winters Model
 ## Initial Model Specification
 The first forecasting model evaluated is Holt-Winters Exponential Smoothing with a multiplicative seasonal structure and an additive trend component.
 
 ## Validation Framework
-To ensure robust model selection, forecasting performance was tested across multiple historical periods rather than relying on a single train-test split. Results were benchmarked against a simple year-over-year forecasting approach, and the final specification was chosen based on both forecast accuracy and its ability to provide additional predictive value beyond the baseline forecast.
+
+To ensure robust model selection, forecasting performance was tested across multiple historical periods rather than relying on a single train-test split.
+
+Models were evaluated relative to the Seasonal Naive benchmark introduced previously, allowing performance to be assessed not only in terms of forecasting accuracy but also in terms of the additional predictive value provided beyond a simple year-over-year forecast.
 
 ## Trend Component Evaluation
 Following the strong recovery in passenger traffic after COVID-19, it seemed reasonable to include a trend component in the Holt-Winters model. Passenger volumes had increased significantly between 2021 and 2026, suggesting that this growth might continue during the forecast period.
