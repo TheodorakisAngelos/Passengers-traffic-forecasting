@@ -19,7 +19,7 @@
 
 The objective of this project is to forecast monthly passenger traffic at Athens International Airport (AIA) for the period October 2026 to September 2027, using historical monthly data from January 2019 to September 2026.
 
-Passenger traffic forecasts support airport capacity planning, resource allocation, staffing decisions and operational planning.
+Passenger traffic forecasts play a critical role in airport management, supporting decisions related to capacity planning, resource allocation, staffing requirements and overall operational efficiency.
 
 ## Exploratory Analysis
 We begin by visualizing the available monthly passenger traffic data. 
@@ -40,9 +40,9 @@ These observations are consistent with the seasonality expected from the tourism
 
 Two time-series forecasting methods were evaluated: Holt-Winters Exponential Smoothing and Seasonal ARIMA (SARIMA). Their performance was compared against a Seasonal Naive benchmark, which uses passenger traffic from the corresponding month of the previous year.
 
-For the Holt-Winters model, multiple historical training windows were evaluated to determine the most reliable forecasting period. Using all available data from 2019 onwards provided the strongest overall performance and was therefore selected for the final model development.
+For the Holt-Winters model, multiple historical training windows were evaluated to determine which training period produced the most reliable forecasts. Starting the training window in 2019 produced the strongest overall performance and was therefore selected for model development.
 
-The same training period was subsequently used for SARIMA, allowing a direct comparison between the two forecasting approaches.
+The same training period was then used for SARIMA, allowing a direct comparison between the two forecasting approaches.
 
 Forecasting accuracy was assessed using Mean Absolute Percentage Error (MAPE), with model selection based on both forecast accuracy and improvement relative to the benchmark.
 
@@ -63,6 +63,8 @@ To address this limitation, several SARIMA specifications were evaluated, as SAR
 
 ### Model Comparison
 
+The final SARIMA model was then compared with the final Holt-Winters model and the Seasonal Naive benchmark on the 2025 test period. The results are shown below.
+
 | Model | MAPE |
 |---------|---------:|
 | Seasonal Naive | 6.84% |
@@ -77,7 +79,7 @@ The combination of lower forecasting error and the absence of significant residu
 
 ## Final SARIMA Forecast
 
-The selected SARIMA(1,1,0)(1,1,0,12) model was fitted using all available historical data to generate the final 12-month forecast.
+The selected SARIMA(1,1,0)(1,1,0,12) model was fitted using all available historical data to produce the final 12-month forecast.
 
 <p align="center">
   <img src="images/SARIMA_pax_forecast_with_CI.png" width="1000" height="1000">
@@ -86,6 +88,8 @@ The selected SARIMA(1,1,0)(1,1,0,12) model was fitted using all available histor
 Passenger traffic is expected to retain its strong seasonal pattern, with volumes peaking during the summer of 2027. August 2027 is forecast to exceed 4.1 million passengers, while year-over-year growth is estimated at approximately 2%–5% across most forecast months.
 
 ### Forecast Comparison: SARIMA vs Holt-Winters
+
+Finally, the table below compares the passenger traffic forecasts produced by the two final forecasting models.
 
 | Month | SARIMA Forecast | Holt-Winters Forecast |
 |---------|---------------:|---------------------:|
@@ -102,15 +106,15 @@ Passenger traffic is expected to retain its strong seasonal pattern, with volume
 | Aug 2027 | 4,119,251 | 4,037,069 |
 | Sep 2027 | 3,698,420 | 3,581,466 |
 
-Although both models produce very similar forecasts, SARIMA consistently projected slightly higher passenger volumes and achieved superior out-of-sample forecasting accuracy during model validation (MAPE: 3.40% vs 4.96%).
+Although both models produced very similar forecasts, SARIMA consistently projected slightly higher passenger volumes. 
 
-For this reason, the SARIMA forecasts were retained as the final forecast for the October 2026 to September 2027 horizon.
+As discussed previously, SARIMA was selected as the preferred forecasting approach based on its superior validation performance (MAPE: 3.40% vs 4.96%).
 
-Future actual passenger traffic data will provide an opportunity to evaluate how well these forecasts perform in practice and to compare forecasted values against realised airport demand.
+Future actual passenger traffic data will provide an opportunity to evaluate how well these forecasts perform in practice and to compare forecasted values against actual airport demand.
 
 ## Key Conclusions
 
-- Strong seasonality is the dominant characteristic of passenger traffic.
+- Strong seasonality is the dominant characteristic of passenger traffic in AIA.
 - Including a trend component reduced forecasting performance in most validation windows.
 - The seasonality-only Holt-Winters model consistently outperformed the Seasonal Naive benchmark.
 - Residual diagnostics revealed unexplained autocorrelation in the Holt-Winters forecast errors, suggesting that some temporal dependencies remained unmodelled.
