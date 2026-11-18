@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-## Key Project Information
+## Project Overview
 
 |  |  |
 |--------|--------|
@@ -47,7 +47,8 @@ The same training period was then used for SARIMA, allowing a direct comparison 
 Forecasting accuracy was assessed using Mean Absolute Percentage Error (MAPE), with model selection based on both forecast accuracy and improvement relative to the benchmark.
 
 ## Final Holt-Winters Forecast
-The final forecasting model therefore retained a multiplicative seasonal structure without a trend component.
+
+The evaluation showed that including a trend component did not consistently improve forecasting performance. As a result, the final Holt-Winters model retained a multiplicative seasonal structure without a trend component, as this specification consistently outperformed both the trend-enhanced alternative and the Seasonal Naive benchmark.
 
 <p align="center">
   <img src="images/HW_forecast_using_best_window_(2019+)_no_trend.png" width="1000" height="1000">
@@ -112,12 +113,10 @@ As discussed previously, SARIMA was selected as the preferred forecasting approa
 
 Future actual passenger traffic data will provide an opportunity to evaluate how well these forecasts perform in practice and to compare forecasted values against actual airport demand.
 
-## Key Conclusions
+## Limitations
 
-- Strong seasonality is the dominant characteristic of passenger traffic in AIA.
-- Including a trend component reduced forecasting performance in most validation windows.
-- The seasonality-only Holt-Winters model consistently outperformed the Seasonal Naive benchmark.
-- Residual diagnostics revealed unexplained autocorrelation in the Holt-Winters forecast errors, suggesting that some temporal dependencies remained unmodelled.
-- SARIMA(1,1,0)(1,1,0,12) achieved the lowest forecasting error, with a MAPE of 3.40% on the 2025 test period.
-- Residual diagnostics indicated that the final SARIMA model successfully captured the remaining patterns present in the historical passenger traffic data.
-- Forecasts suggest continued passenger growth through September 2027 while preserving the strong seasonal patterns historically observed at Athens International Airport.
+This analysis is based exclusively on historical passenger traffic data.
+
+As a result, the forecasts do not explicitly incorporate external demand drivers such as economic growth, tourism demand, airline capacity, route development and fuel prices.
+
+For longer forecasting horizons, incorporating these factors could further improve forecast accuracy.
