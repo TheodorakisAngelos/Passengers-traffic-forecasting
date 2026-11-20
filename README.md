@@ -126,10 +126,10 @@ This approach ensures that each candidate training window is evaluated not only 
 Following the strong recovery in passenger traffic after COVID-19, it seemed reasonable to include a trend component in the Holt-Winters model. Passenger volumes had increased significantly between 2021 and 2026, suggesting that this growth might continue during the forecast period.
 To test this assumption, the Holt-Winters framework was evaluated using two alternative specifications:
 
-1.	Additive Trend + Multiplicative Seasonality
-2.	Multiplicative Seasonality only
+1.	Holt-Winters with Additive Trend and Multiplicative Seasonality
+2.	Holt-Winters with Multiplicative Seasonality Only
 
-Both models were assessed using the same rolling-origin validation framework described previously and were compared against the Seasonal Naive benchmark.
+Both models were assessed using the same rolling-origin validation framework described previously and were compared against the baseline benchmark.
 
 The expectation was that the trend model would produce more accurate forecasts by capturing the airport's long-term growth. 
 
@@ -138,7 +138,7 @@ Surprisingly, the results showed the opposite.
 In most cases, adding a trend component resulted in higher forecasting errors. While the seasonal-only model consistently outperformed the Seasonal Naive benchmark, the trend model often produced worse results and in some cases even underperformed the benchmark itself.
 
 
-| Start Year | Baseline MAPE | Trend + Seasonal | Seasonal Only |
+| Start Year | Baseline MAPE | HW Trend + Seasonal MAPE | HW Seasonal Only MAPE|
 |------------|-------------:|-----------------:|--------------:|
 | 2019+ | 42.27% | 74.50% | 21.71% |
 | 2020+ | 19.14% | 15.64% | 18.39% |
@@ -147,18 +147,14 @@ In most cases, adding a trend component resulted in higher forecasting errors. W
 | 2023+ | 5.69% | 6.34% | 2.98% |
 | 2024+ | 4.55% | 3.57% | 2.17% |
 
-The results indicate that the benefit of including a trend component is inconsistent. Although the trend model performed slightly better for the 2020+ training window (15.64% vs 18.39%), it produced substantially higher errors for most of the remaining candidate windows. The most extreme example was the 2019+ window, where forecast error increased from 21.71% to 74.50% after adding a trend component. 
+The results indicate that the benefit of including a trend component is inconsistent across validation periods. Although the trend model performed slightly better for the 2020+ training window (15.64% vs 18.39%), it produced substantially higher errors for most of the remaining candidate windows. The most extreme example was the 2019+ window, where forecast error increased from 21.71% to 74.50% after adding a trend component. 
 
 <p align="center">
   <img src="images/Trend_vs_No_trend_Model_comparison.png" width="700" height ="500">
 </p>
 
 ## Evaluating Improvement Against the Baseline
-After comparing the two Holt-Winters specifications, the next step is to evaluate whether they provide any improvement over the Seasonal Naive benchmark.
-
-In several validation periods, the trend model produced less accurate forecasts than the Seasonal Naive benchmark.
-
-By contrast, the seasonality-only model consistently outperformed the benchmark across all training windows.
+The relative improvement achieved by each Holt-Winters specification over the baseline forecast is shown below.
 
 ### Improvement vs Baseline
 | Start Year | Trend + Seasonal | Seasonal Only |
@@ -175,18 +171,14 @@ By contrast, the seasonality-only model consistently outperformed the benchmark 
 </p>
 
 ## HW Model Diagnostics
-Model diagnostics provided additional insight. In several validation periods, the trend smoothing parameter (β) was close to 1, indicating that the model placed very high weight on the most recent observations when estimating future growth. As a result, the model became highly sensitive to short-term fluctuations in passenger traffic. Rather than identifying a stable underlying pattern, the trend component reacted strongly to temporary changes and introduced additional forecast uncertainty.
-
-By contrast, the seasonality-only specification produced much more stable results. The model focused on the strongest and most reliable feature present in the data: the recurring annual seasonality of passenger traffic.
+Model diagnostics provided additional insight into the behaviour of the trend-enhanced specification. Although the best result for the trend-enhanced specification was obtained using the 2020+ training window, with an average MAPE of 15.64%, its performance was far less consistent across validation periods. The trend smoothing parameter (β) was frequently close to 1, causing the model to place excessive weight on the most recent observations and become highly sensitive to short-term fluctuations in passenger traffic.
 
 The best-performing seasonality-only model was obtained using the 2019+ training window. It achieved an average MAPE of 21.71% and improved forecasting accuracy by 48.63% compared with the Seasonal Naive benchmark across six validation periods. The 2024+ training window was not considered for model selection because only starting years with at least three validation periods were included in the evaluation.
-
-The best result for the trend-enhanced model was obtained using the 2020+ training window, with an average MAPE of 15.64% and an improvement of 18.27% over the benchmark. Although this MAPE was lower, the model's performance was much less consistent across the different validation periods and most times failed to outperform the baseline forecast.
 
 For this reason, the trend component was removed from the final specification. The results showed that, for a 12-month forecasting horizon, passenger traffic at Athens International Airport is better explained by strong seasonal patterns than by extending recent growth trends into the future.
 
 ## Final Holt-Winters Forecast
-The final forecasting model therefore retained a multiplicative seasonal structure without a trend component, as this specification delivered more stable forecasts, lower validation errors, and substantially stronger improvements over the Seasonal Naive benchmark across multiple out-of-sample periods.
+The final forecasting model therefore retained a multiplicative seasonal structure without a trend component. Using all available historical data, the model was then fitted to generate a 12-month forecast covering October 2026 through September 2027.
 
 <p align="center">
   <img src="images/HW_forecast_using_best_window_(2019+)_no_trend.png" width="1000" height="1000">
@@ -210,14 +202,14 @@ The final forecasting model therefore retained a multiplicative seasonal structu
 | Sep 2027 | 3.58 M |
 
 ## Why SARIMA Was Considered
-We observed that the final Holt-Winters model delivered stable forecasts and consistently outperformed the Seasonal Naive benchmark. However, residual diagnostics revealed autocorrelation in the forecast errors. The residual ACF plot showed a strong positive correlation at lag 1, while the Ljung-Box test indicated statistically significant residual autocorrelation (p < 0.05).
+Although the final Holt-Winters specification produced reliable forecasts, residual diagnostics revealed autocorrelation in the forecast errors. The residual ACF plot showed a strong positive correlation at lag 1, while the Ljung-Box test indicated statistically significant residual autocorrelation (p < 0.05).
 
 ### Holt-Winters residual ACF plot
 <p align="center">
   <img src="images/Residual_Autocorrelation_HW.png" width="600" height="400">
 </p>
 
-These findings indicate that the residuals were not completely random and still contained autocorrelation. In other words, some information remained unexplained by the Holt-Winters model.
+These findings suggest that some temporal structure remained unexplained by the Holt-Winters model.
 
 This provided our motivation to evaluate SARIMA. Unlike Holt-Winters, SARIMA explicitly models autocorrelation in the time series by incorporating relationships between current and past observations. As a result, it may be able to capture patterns that remained unexplained by the Holt-Winters model and improve forecasting accuracy.
 
@@ -227,7 +219,7 @@ This provided our motivation to evaluate SARIMA. Unlike Holt-Winters, SARIMA exp
 Before specifying a SARIMA model, we examined our time series using the following:
 
 - **Autocorrelation Function (ACF)** to identify relationships between current passenger volumes and previous months.
-- **Partial Autocorrelation Function (PACF)** to identify the specific previous months that directly influence current passenger volumes, without the indirect effects of other periods.
+- **Partial Autocorrelation Function (PACF)** to identify the specific previous months that directly influence current passenger volumes, without the indirect effects of other months.
 - **Augmented Dickey-Fuller (ADF) Test** to assess stationarity.
 
 The ACF plot showed strong positive autocorrelation at short lags, indicating that passenger traffic remains highly dependent on recent months. A clear spike was also visible at lag 12, showing that passenger volumes are strongly related to the same month of the previous year and confirming the presence of annual seasonality.
@@ -251,9 +243,9 @@ The ADF test produced the following results:
 
 Because the p-value exceeded 0.05, the null hypothesis of non-stationarity could not be rejected. This suggests that the passenger series is non-stationary and therefore requires differencing before applying SARIMA.
 
-The ADF test indicated that the series was non-stationary. To address this issue, first-order differencing (d = 1) was incorporated into the SARIMA candidate models evaluated later in the analysis.
+To address this issue, first-order differencing (d = 1) was incorporated into the SARIMA candidate models evaluated later in the analysis.
 
-In addition to non-seasonal differencing, the strong annual seasonality observed in the ACF plot suggested that seasonal differencing could also be beneficial. Applying one seasonal difference (D = 1) removes recurring year-over-year patterns by comparing each month with the corresponding month of the previous year.
+In addition to non-seasonal differencing applied, the strong annual seasonality observed in the ACF plot suggested that seasonal differencing could also be beneficial. Applying one seasonal difference (D = 1) removes recurring year-over-year patterns by comparing each month with the corresponding month of the previous year.
 
 For this reason, candidate models both with and without seasonal differencing were evaluated, allowing the final specification to be selected based on out-of-sample forecasting performance.
 
@@ -265,8 +257,8 @@ To ensure consistency with the Holt-Winters evaluation, the same train-test spli
 
 | Dataset | Period |
 |----------|----------|
-| Training | January 2019 - December 2024 |
-| Testing | January 2025 - December 2025 |
+| Train | January 2019 - December 2024 |
+| Test | January 2025 - December 2025 |
 
 Using the same validation period allows a direct comparison between Holt-Winters and SARIMA forecasting performance.
 
@@ -298,10 +290,10 @@ The PACF suggested that lag 1 contains the strongest direct predictive informati
 
 Several candidate SARIMA models were therefore evaluated:
 
-- SARIMA(1,1,0)(1,0,0,12)
-- SARIMA(1,1,0)(1,1,0,12)
-- SARIMA(0,1,1)(0,0,1,12)
-- SARIMA(1,1,1)(1,0,1,12)
+- SARIMA (1,1,0) (1,0,0,12)
+- SARIMA (1,1,0) (1,1,0,12)
+- SARIMA (0,1,1) (0,0,1,12)
+- SARIMA (1,1,1) (1,0,1,12)
 
 Most candidate specifications focused on autoregressive terms because the PACF suggested that previous passenger volumes contain useful predictive information. Candidate models incorporating moving-average terms were also evaluated to determine whether modelling past forecast errors could further improve forecast accuracy.
 
@@ -313,10 +305,10 @@ The final model was selected based on out-of-sample forecasting accuracy using t
 
 | Model | Test MAPE |
 |---------|---------|
-| **SARIMA(1,1,0)(1,1,0,12)** | **3.40%** |
-| SARIMA(1,1,0)(1,0,0,12) | 5.32% |
-| SARIMA(1,1,1)(1,0,1,12) | 5.38% |
-| SARIMA(0,1,1)(0,0,1,12) | 15.64% |
+| **SARIMA (1,1,0) (1,1,0,12)** | **3.40%** |
+| SARIMA (1,1,0) (1,0,0,12) | 5.32% |
+| SARIMA (1,1,1) (1,0,1,12) | 5.38% |
+| SARIMA (0,1,1) (0,0,1,12) | 15.64% |
 
 The best-performing specification was:
 
@@ -331,11 +323,11 @@ This model achieved the lowest forecasting error among all candidate specificati
 The selected model contains:
 
 - AR(1): One non-seasonal autoregressive term, meaning that passenger traffic is influenced by the previous month's passenger volume.
-- d = 1: First-order differencing removes longer-term non-stationarity by modelling month-to-month changes.
+- d = 1: First-order differencing removes non-stationarity by modelling month-to-month changes.
 - SAR(1): One seasonal autoregressive term, meaning that passenger traffic is influenced by passenger volumes observed during the same month one year earlier.
 - D = 1: Seasonal differencing removes recurring annual patterns by modelling year-over-year changes.
 
-In practical terms, the model assumes that passenger traffic depends both on recent monthly activity and on seasonal patterns observed during the same period in previous years.
+This specification assumes that passenger traffic depends both on recent monthly activity and on seasonal patterns observed during the same period in previous years.
 
 ### Estimated Parameters
 
@@ -354,9 +346,7 @@ Both parameters were statistically significant at the 5% level, providing eviden
 
 After fitting the selected SARIMA model, residual behaviour was examined.
 
-The objective of residual diagnostics is simple:
-
-> If a forecasting model has successfully captured the predictable structure of a time series, the remaining residuals should behave like random noise.
+The objective of residual diagnostics is straightforward: If a forecasting model has successfully captured the predictable structure of a time series, the remaining residuals should behave like random noise.
 
 The residual autocorrelation plot showed no statistically significant spikes outside the confidence intervals.
 
@@ -366,8 +356,6 @@ The residual autocorrelation plot showed no statistically significant spikes out
 
 Unlike the Holt-Winters model, where autocorrelation remained visible in the residuals, the SARIMA residuals showed no meaningful patterns.
 
-This indicates that the model successfully captured the remaining temporal structure present in the passenger series.
-
 The Ljung-Box test confirmed this result:
 
 | Lag | p-value |
@@ -376,23 +364,11 @@ The Ljung-Box test confirmed this result:
 
 Because the p-value is substantially greater than 0.05, there is no statistical evidence of significant residual autocorrelation.
 
-This result supports the visual evidence from the residual ACF plot and suggests that the model successfully captured the remaining temporal structure in the series.
-
-As a result, the residuals behave largely as random noise, indicating that most of the information in the data has been captured by the model.
+Taken together, the residual ACF plot and Ljung-Box test suggest that the remaining forecast errors behave largely as random noise and that the model has adequately captured the main patterns in the data.
 
 ---
 
 ## Why SARIMA Improved on Holt-Winters
-
-The Holt-Winters model focuses primarily on estimating level, trend and seasonal patterns.
-
-SARIMA goes one step further by explicitly modelling autocorrelation, meaning that it captures how current passenger volumes depend on previous observations.
-
-While passenger traffic itself showed significant autocorrelation, the important question is whether that autocorrelation remains after fitting a forecasting model.
-
-For Holt-Winters, residual diagnostics indicated that some autocorrelation remained unexplained. For SARIMA, the residual autocorrelation largely disappeared.
-
-This suggests that SARIMA was able to capture patterns that Holt-Winters left unmodelled, resulting in more accurate forecasts.
 
 ### Forecast Accuracy Comparison (2025 Test Period)
 
@@ -404,7 +380,7 @@ This suggests that SARIMA was able to capture patterns that Holt-Winters left un
 
 SARIMA achieved the lowest forecasting error on the 2025 test period, reducing MAPE by approximately 31% relative to Holt-Winters and by 50% relative to the Seasonal Naive benchmark.
 
-The combination of lower forecasting error and the absence of significant residual autocorrelation indicates that SARIMA was better able to explain the historical passenger traffic patterns, resulting in more accurate forecasts.
+The combination of lower forecasting error and the absence of significant residual autocorrelation indicates that SARIMA was better able to capture the underlying patterns in passenger traffic, resulting in more accurate forecasts.
 
 ---
 
@@ -433,11 +409,9 @@ The final SARIMA(1,1,0)(1,1,0,12) model was fitted using all available historica
 | Aug 2027 | 4.12 M |
 | Sep 2027 | 3.70 M |
 
-The resulting forecast reflects a transition from the rapid post-COVID recovery period towards a more stable growth trajectory while preserving the well-established seasonal behaviour of Athens International Airport passenger traffic.
+The resulting forecast reflects a transition from the rapid post-COVID recovery period towards a more stable growth trajectory while preserving the strong seasonal patterns historically observed at Athens International Airport.
 
 Passenger volumes are expected to increase by approximately 2% to 5% year-over-year across most forecast months, with August 2027 projected to exceed 4.1 million passengers.
-
-From a modelling perspective, the absence of significant residual autocorrelation suggests that the final SARIMA specification successfully captured the main predictable patterns present in the historical passenger series.
 
 ### Forecast Comparison: SARIMA vs Holt-Winters
 
@@ -458,9 +432,9 @@ From a modelling perspective, the absence of significant residual autocorrelatio
 
 Although both models produce very similar forecasts, SARIMA consistently projected slightly higher passenger volumes and achieved superior out-of-sample forecasting accuracy during model validation (MAPE: 3.40% vs 4.96%).
 
-For this reason, the SARIMA forecasts were retained as the final forecast for the October 2026 to September 2027 horizon.
+Given its superior validation performance, the SARIMA forecast was retained as the final forecast for the October 2026 to September 2027 horizon.
 
-Future actual passenger traffic data will provide an opportunity to evaluate how well these forecasts perform in practice and to compare forecasted values against realised airport demand.
+As actual passenger traffic data become available, forecast performance can be assessed by comparing projected and realised passenger volumes.
 
 ## Key Conclusions
 
